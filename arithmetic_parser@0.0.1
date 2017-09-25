@@ -44,11 +44,7 @@ int right(int x, int y)
 int main()
 {
    int x,y,res;
-   
    char op,op1;
-   
-
-    
    cin>> x;
    cin>> op;
    if (op=='>') {cin>>op1;}
@@ -56,41 +52,32 @@ int main()
   cin>>y;
  if(op == '+')     
    {
-       
-       
-       res=sum(x,y);
-       cout<< res <<endl;
+     res=sum(x,y);
+     cout<< res <<endl;
    }
  else if(op == '-')
  {
-    
      res=meh(x,y);
      cout<<res<<endl;
  }
 
  else if(op == '*')
  {
-  
-     
      res=sleh(x,y);
      cout<<res<<endl;
  }
  else if(op =='/')
  {
      if(y==0 && x!=0)
-   {cout<<"inf";}
-    if(y==0 && x==0)
-    {cout<<"nan";}
-    if(y>0)
-    {res=keh(x,y);
-   cout<<res;}
-   if(y<0)
-    {res=keh(x,y);
-   cout<<res;}
-
-  
-    
-    
+     {cout<<"inf";}
+     if(y==0 && x==0)
+     {cout<<"nan";}
+     if(y>0)
+     {res=keh(x,y);
+     cout<<res;}
+     if(y<0)
+     {res=keh(x,y);
+     cout<<res;}
  }
  else if(op =='%')
  {
@@ -115,18 +102,15 @@ else if(op =='^')
 }
 else  if (op =='<')
  {
-    
      res=left(x,y);
      cout<<res<<endl;
  }
 else if (op =='>')
 {
-    
-    res=right(x,y);
-    cout<<res<<endl;
+     res=right(x,y);
+     cout<<res<<endl;
 }
-    cin.get();
-   return 0;
-
+     cin.get();
+     return 0;
 
 }
