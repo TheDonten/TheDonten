@@ -5,36 +5,36 @@ using namespace std;
 int main()
 
 {
-	double a,b;
+	double x,y,res;
 	char op, op1;
 
-	cin >> a;
+	cin >> x;
 	cin.get(op1);
 
 	while (op1 != '\n') 
 	{
 		cin.get(op);
 		cin.get(op1);
-		cin >> b;
+		cin >> y;
 		cin.get(op1);
 	
 		if(op == '+'){
- 	 		a = a+b;
+ 	 		res = x+y;
 		}
 	
 		else if(op == '-'){
-  			a = a-b;
+  			res = x-y;
 		     }
 
 		else if(op == '*'){
-  			a = a*b;
+  			res = x*y;
 		     }
 
-		else if(op == '/') if (b==0) {cout << "You can`t use 0"; return 0;} 
-			else a = a/b;
+		else if(op == '/') if (b==0) {cout << "infinite"; return 0;} 
+			else res = x/y;
 	 }
 	
-cout << a;
+cout << res;
 	
 return 0;
 }
