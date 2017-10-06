@@ -4,19 +4,19 @@ using namespace std;
 
 bool readmatrix(int matrix[3][3])
 {
-    bool result = true;
-    for (int i = 0; i<3; i++) {
+    bool success = true;
+    for (int i = 0; i<3 && success; i++) {
         string string;
         getline(cin, string);
         istringstream stream(string);
         for (int j = 0; j < 3; ++j) {
             if (!(stream >> matrix[i][j])) {
-                result = false;
+                success = false;
                 break;
             }
         }
     }
-    return result;
+    return success;
 }
 
 
@@ -94,3 +94,5 @@ int main()
         cout << "An error has occured while reading input data" << endl;
     }
 }
+
+ 
