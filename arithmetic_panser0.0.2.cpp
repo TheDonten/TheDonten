@@ -1,43 +1,44 @@
 #include <iostream>
+#include <cstring>
+#include <sstream>
 
 using namespace std;
-
-int main()
-
+int main ()
 {
-	double x,y;
-	char op, op1;
+string length;
+double x,y;
+char op1;
 
-	cin >> x;
-	cin.get(op1);
+getline( cin, length);
+istringstream stream(length);
 
-	while (op1 != '\n') 
-	{
-		cin.get(op);
-		cin.get(op1);
-		cin >> y;
-		cin.get(op1);
-	
-		if(op == '+')
-		     {
- 	 		x = x+y;
-		     }
-	
-		else if(op == '-')
-		     {
-  			x = x-y;
-		     }
-
-		else if(op == '*')
-		     {
-  			x = x*y;
-		     }
-
-		else if(op == '/') if (y==0) {cout << "infinite"; return 0;} 
-			else x = x/y;
-	 }
-	
-cout << x;
-	
-return 0;
+stream>>x;
+while ( stream>>op1)
+ {
+    if( op1=='+')
+    {
+        stream>>y;
+        x += y;
+    }
+    if( op1=='-')
+    {
+        stream>>y;
+        x -= y;
+    }
+    if (op1=='*')
+    {
+        stream>>y;
+        x *= y;
+    }
+    if(op1=='/')
+    {
+        if (x==0 && y==0) {cout<<"nan";}
+        else if (x!=0 && y==0) {cout<<"inf";}
+        else 
+        stream>>y;
+        x /= y;
+    }
+    
+ }
+ cout<<x;
 }
