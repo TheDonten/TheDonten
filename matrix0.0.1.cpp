@@ -1,0 +1,96 @@
+#include <iostream>
+#include <sstream>
+using namespace std;
+
+bool readmatrix(int matrix[3][3])
+{
+    bool result = true;
+    for (int i = 0; i<3; i++) {
+        string string;
+        getline(cin, string);
+        istringstream stream(string);
+        for (int j = 0; j < 3; ++j) {
+            if (!(stream >> matrix[i][j])) {
+                result = false;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
+
+
+int main() 
+{
+   int matrix1[3][3];
+   int matrix2[3][3];
+   string string;
+    if (readmatrix(matrix1)) 
+    {
+        getline(cin, string);
+        if (string == "+") {
+            if (readmatrix(matrix2)) {
+                cout << endl;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        cout << (matrix1[i][j] + matrix2[i][j]) << " ";
+                    }
+                    cout << endl;
+                }
+            }
+            else {
+                cout << "An error has occured while reading input data" << endl;
+                return -1;
+            }
+        }
+        else if (string == "-")
+        {
+            if (readmatrix(matrix2)) 
+            {
+                cout << endl;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        cout << (matrix1[i][j] - matrix2[i][j]) << " ";
+                    }
+                    cout << endl;
+                }
+            }
+            else 
+            {
+                cout << "An error has occured while reading input data" << endl;
+                return -1;
+            }
+        }
+        else if (string == "*") {
+            if (readmatrix(matrix2)) 
+            {
+                cout << endl;
+                for (int i = 0; i < 3; i++) 
+                {
+                    for (int j = 0; j < 3; j++) {
+                        int result=0;
+                        for(int k=0; k<3;k++)
+                            result+=matrix1[i][k] * matrix2[k][j];
+                        cout << result << " ";
+                    }
+                    cout << endl;
+                }
+            }
+            else 
+            {
+                cout << "An error has occured while reading input data" << endl;
+                return -1;
+            }
+        }
+        else 
+        {
+            cout << "An error has occured while reading input data" << endl;
+            return -1;
+        }
+    }
+    else
+    {
+        cout << "An error has occured while reading input data" << endl;
+    }
+}
