@@ -18,19 +18,22 @@ int main()
 		cin >> y;
 		cin.get(op1);
 	
-		if(op == '+'){
+		if(op == '+')
+		     {
  	 		res = x+y;
-		}
+		     }
 	
-		else if(op == '-'){
+		else if(op == '-')
+		     {
   			res = x-y;
 		     }
 
-		else if(op == '*'){
+		else if(op == '*')
+		     {
   			res = x*y;
 		     }
 
-		else if(op == '/') if (b==0) {cout << "infinite"; return 0;} 
+		else if(op == '/') if (y==0) {cout << "infinite"; return 0;} 
 			else res = x/y;
 	 }
 	
