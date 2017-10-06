@@ -5,7 +5,7 @@ using namespace std;
 int main()
 
 {
-	double x,y,res;
+	double x,y;
 	char op, op1;
 
 	cin >> x;
@@ -20,24 +20,24 @@ int main()
 	
 		if(op == '+')
 		     {
- 	 		res = x+y;
+ 	 		x = x+y;
 		     }
 	
 		else if(op == '-')
 		     {
-  			res = x-y;
+  			x = x-y;
 		     }
 
 		else if(op == '*')
 		     {
-  			res = x*y;
+  			x = x*y;
 		     }
 
 		else if(op == '/') if (y==0) {cout << "infinite"; return 0;} 
-			else res = x/y;
+			else x = x/y;
 	 }
 	
-cout << res;
+cout << x;
 	
 return 0;
 }
