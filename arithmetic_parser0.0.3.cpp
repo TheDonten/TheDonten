@@ -19,7 +19,7 @@ int main()
     	stream >> y;
 
 	if ( op1 == '+' ) {
-    x += y;
+        x += y;
 	op2 = '+';
 	c = y;
         }
