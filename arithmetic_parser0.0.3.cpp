@@ -7,7 +7,7 @@ using namespace std;
 int main()
 {	
     double x, y, c;
-    char op1, op2;
+    char op1, op2 ='*';
 	
     string length;
     getline( cin, length );
