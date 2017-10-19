@@ -133,7 +133,7 @@ using namespace std;
 	              	matrix[j][i] += matrix[j-1][i]; matrix[j-1][i] = 0;
 				  }
 	     }
-	    for (int j=3; j > -1; j--)
+	    for (int j=3; j > 0; j--)
 	     {
 		 
 	            if(matrix[j][i] == 0)
