@@ -112,7 +112,7 @@ using namespace std;
 
  void down(int matrix[4][4])
 {
-	for (int i=0; i<4; i--)
+	for (int i=0; i<4; i++)
 	 {
 	 	int m=3;
 	 	for (int j =3; j > -1; j--)
@@ -121,7 +121,7 @@ using namespace std;
 	 	         if( matrix[j][i] !=0)
 	 	          {
 	 	          	matrix[m][i] = matrix[j][i];
-	 	          	if(m != j) matrix[j][i]= 0; m++;
+	 	          	if(m != j) matrix[j][i]= 0; m--;
 				  }
 	     }
 	 
