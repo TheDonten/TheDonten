@@ -3,7 +3,7 @@
 #include <sstream>
 using namespace std;
  
-bool read(double *array,  int size)
+bool read(double *array, unsigned int size)
 {
 	bool k=true;
 	string mas;
@@ -17,7 +17,7 @@ bool read(double *array,  int size)
 	}
    return true;
  } 
- void selection_sort (double* array,  int size) {
+ void selection_sort (double* array, unsigned int size) {
 	
 	for (unsigned int i=0; i<size; i++) {
 		
@@ -39,8 +39,8 @@ bool read(double *array,  int size)
 }
  int main()
  {
-bool k;
-int size;
+
+unsigned int size;
 cin>>size;
 cin.get();
 double *array = new double[size];
@@ -60,3 +60,5 @@ else
 
  	
  }
+
+
