@@ -1,7 +1,7 @@
 #include<iostream>
 #include <utility>
 #include <sstream>
-    using namespace std;
+using namespace std;
 
 bool read(double *array, unsigned int size) {
   bool k = true;
