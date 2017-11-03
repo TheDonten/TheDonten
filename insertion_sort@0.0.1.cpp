@@ -17,7 +17,7 @@ bool read(double *array, unsigned int size)
 	}
    return true;
  } 
- void selection_sort (double* array, unsigned int size) 
+ void insertion_sort(double* array, unsigned int size) 
  {
    for (unsigned int i=1; i<size; i++) 
 	{
@@ -43,7 +43,7 @@ cin.get();
 double *array = new double[size];
 if(read(array, size))
 	{ 
-		selection_sort(array, size);
+		insertion_sort(array, size);
 		print_array(array, size);
 		cin.get();
 	}
