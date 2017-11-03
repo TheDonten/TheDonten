@@ -22,7 +22,7 @@ void bubble_sort(double *array, unsigned int size) {
     sorted = true;
     for (unsigned int i = 0; i < size - 1; i++) {
       if (array[i] > array[i + 1]) {
-        std::swap(array[i], array[i + 1]);
+        swap(array[i], array[i + 1]);
         sorted = false;
       }
     }
