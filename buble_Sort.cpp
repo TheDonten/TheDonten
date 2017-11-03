@@ -58,7 +58,7 @@ if(read(array, size))
 		cout << "An error has occured while reading numbers from line";
 		cin.get();
 	}
-	delete array;
+	deleteх[] array;
         return 0;
 
  	
