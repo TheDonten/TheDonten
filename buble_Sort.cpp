@@ -47,7 +47,8 @@ int main() {
     bubble_sort(array, size);
     print_array(array, size);
     cin.get();
-  } else {
+  } 
+  else {
     cout << "An error has occured while reading numbers from line";
     cin.get();
   }
