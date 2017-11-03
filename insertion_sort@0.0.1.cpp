@@ -30,7 +30,7 @@ void print_array(double *array, unsigned int size) {
 }
 int main() {
   unsigned int size;
-  double *array = new double[size];
+  
   string string;
   getline(cin, string);
   istringstream stream(string);
@@ -38,6 +38,7 @@ int main() {
     cout << "An error has occured while reading numbers from line";
     return -1;
   }
+  double *array = new double[size];
   if (read(array, size)) {
     insertion_sort(array, size);
     print_array(array, size);
