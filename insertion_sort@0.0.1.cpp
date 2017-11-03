@@ -30,7 +30,6 @@ void print_array(double *array, unsigned int size) {
 }
 int main() {
   unsigned int size;
-  
   string string;
   getline(cin, string);
   istringstream stream(string);
