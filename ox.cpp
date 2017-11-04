@@ -1,178 +1,158 @@
-#include<iostream>
+#include <iostream>
 #include <sstream>
 using namespace std;
 
-char print_pole(char   array[3][3])
-{
-
-cout<<"    1   2   3"<<endl;
-cout<<"  +---+---+---+"<<endl;
-for (int i=0; i<3; i++)
-{
-	for(int j=0; j<3; j++)
-	{    
-	   
-		if(i==0 && j==0)
-		{
-		  cout<<"a | "<<array[0][0]<<" | ";
-		}
-	    if(i==0 && j==1)
-	    {
-	      cout<<array[0][1]<<" | ";
-		}
-		if(i==0 && j==2)
-		{
-		  cout<<array[0][2]<<" |"<<endl;
-		  cout<<"  +---+---+---+"<<endl;
-		}
-	    if(i==1 && j==0)
-	    {
-	      cout<<"b | "<<array[1][0]<<" | ";
-	   
-	     
-		}
-		if(i==1 && j==1)
-	    {
-	      cout<<array[1][1]<<" | ";
-	    
-	     
-		}
-		if(i==1 && j==2)
-	    {
-	      cout<<array[1][2]<<" |"<<endl;
-	      cout<<"  +---+---+---+"<<endl;
-	     
-		}
-	    if(i==2 && j==0)
-	    {
-	      cout<<"c | "<<array[2][0]<<" | ";
-		}
-	    if(i==2 && j==1)
-	    {
-	      cout<<array[2][1]<<" | ";
-		}
-	    if(i==2 && j==2)
-	    {
-	      cout<<array[2][2]<<" |"<<endl;	
-		}
-	}  
- 
+char print_pole(char array[3][3]) {
+  cout << "    1   2   3" << endl;
+  cout << "  +---+---+---+" << endl;
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (i == 0 && j == 0) {
+        cout << "a | " << array[0][0] << " | ";
+      }
+      if (i == 0 && j == 1) {
+        cout << array[0][1] << " | ";
+      }
+      if (i == 0 && j == 2) {
+        cout << array[0][2] << " |" << endl;
+        cout << "  +---+---+---+" << endl;
+      }
+      if (i == 1 && j == 0) {
+        cout << "b | " << array[1][0] << " | ";
+      }
+      if (i == 1 && j == 1) {
+        cout << array[1][1] << " | ";
+      }
+      if (i == 1 && j == 2) {
+        cout << array[1][2] << " |" << endl;
+        cout << "  +---+---+---+" << endl;
+      }
+      if (i == 2 && j == 0) {
+        cout << "c | " << array[2][0] << " | ";
+      }
+      if (i == 2 && j == 1) {
+        cout << array[2][1] << " | ";
+      }
+      if (i == 2 && j == 2) {
+        cout << array[2][2] << " |" << endl;
+      }
+    }
+  }
+  cout << "  +---+---+---+" << endl;
 }
-cout<<"  +---+---+---+"<<endl;
+void show_move(char array[3][3], char op) {
+  int k = 0;
+  for (int i = 0; i < 3; i++) {
+    for (int j = 0; j < 3; j++) {
+      if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
+        if (i == 0) {
+          cout << ++k << ".mark cell a" << j + 1 << " as " << op << endl;
+        }
+        if (i == 1) {
+          cout << ++k << ".mark cell b" << j + 1 << " as " << op << endl;
+        }
+        if (i == 2) {
+          cout << ++k << ".mark cell c" << j + 1 << " as " << op << endl;
+        }
+      }
+    }
+  }
+  cout << ++k << ". quit" << endl;
 }
-bool proverka(char array[3][3]){
-	 int k=0;
-	for ( int i=0; i<3; i++){
-		for(int j=0;j<3;j++){
-		
-		if (!(array[i][j]=='X' || array[i][j]=='O'))
-		{
-			k++;
-		}
-		if (k>0) return true;
-    
-	}
-	}
-	return false;
+bool win_game(char array[3][3]) {
+  for (unsigned int i = 0; i < 3; i++) {
+    for (unsigned int j = 0; j < 3; j++) {
+      if ((array[i][j] == 'X' || array[i][j] == 'O') &&
+          array[i][j] == array[i][j + 1] && array[i][j] == array[i][j + 2])
+        return true;
+      if ((array[i][j] == 'X' || array[i][j] == 'O') &&
+          array[i][j] == array[i + 1][j] && array[i][j] == array[i + 2][j])
+        return true;
+      if ((array[0][0] == 'X' || array[0][0] == 'O') &&
+          array[0][0] == array[1][1] && array[0][0] == array[2][2])
+        return true;
+      if ((array[0][2] == 'X' || array[0][2] == 'O') &&
+          array[0][2] == array[1][1] && array[0][2] == array[2][0])
+        return true;
+    }
+  }
+  if ((array[0][0] == 'X' || array[0][0] == 'O') &&
+      array[0][0] == array[1][1] && array[0][0] == array[2][2])
+    return true;
+  if ((array[0][2] == 'X' || array[0][2] == 'O') &&
+      array[0][2] == array[1][1] && array[0][2] == array[2][0])
+    return true;
+  return false;
 }
-
-
-int main()
-{
-char op,op1,op2;
-char  array[3][3]={0,0,0,0,0,0,0,0,0};
-print_pole(array);
-cout<<"1. mark cell a1 as X"<<endl;
-cout<<"2. mark cell a2 as X"<<endl;
-cout<<"3. mark cell a3 as X"<<endl;
-cout<<"4. mark cell b1 as X"<<endl;
-cout<<"5. mark cell b2 as X"<<endl;
-cout<<"6. mark cell b3 as X"<<endl;
-cout<<"7. mark cell c1 as X"<<endl;
-cout<<"8. mark cell c2 as X"<<endl;
-cout<<"9. mark cell c3 as X"<<endl;
-
-
-
-while(cin>>op)
-{ 
-switch(op)
-{
-	
-case '1':{if(array[0][0]=='O')
-{ cout<<" ";}
-else array[0][0]=' X';print_pole(array);break;}
-case '2':{array[0][1]=' X';print_pole(array);break;}
-case '3':{array[0][2]=' X';print_pole(array);break;}
-case '4':{array[1][0]=' X';print_pole(array);break;}
-case '5':{array[1][1]=' X';print_pole(array);break;}
-case '6':{array[1][2]=' X';print_pole(array);break;}
-case '7':{array[2][0]=' X';print_pole(array);break;}
-case '8':{array[2][1]=' X';print_pole(array);break;}
-case '9':{array[2][2]=' X';print_pole(array);break;}
+bool proverka(char array[3][3]) {
+  unsigned int l = 0;
+  for (unsigned int i = 0; i < 3; i++) {
+    for (unsigned int j = 0; j < 3; j++) {
+      if (!(array[i][j] == 'X' || array[i][j] == 'O')) {
+        l++;
+      }
+      if (l > 0) return true;
+    }
+  }
+  cout << " No more motion" << endl;
+  return false;
 }
-
- 
-	 
- 
- while(cin>>op1)
- {  
- switch(op1)
-   {
-     case '1':{array[0][0]=' O';print_pole(array);break;}
-     case '2':{array[0][1]=' O';print_pole(array);break;}
-     case '3':{array[0][2]=' O';print_pole(array);break;}
-     case '4':{array[1][0]=' O';print_pole(array);break;}
-     case '5':{array[1][1]=' O';print_pole(array);break;}
-     case '6':{array[1][2]=' O';print_pole(array);break;}
-     case '7':{array[2][0]=' O';print_pole(array);break;}
-     case '8':{array[2][1]=' O';print_pole(array);break;}
-     case '9':{array[2][2]=' O';print_pole(array);break;}
-   }
-   if(array[0][0]==0)
-  { 
-   cout<<"1. mark cell a1 as X"<<endl;
-  }   
-if(array[0][1]==0)
-  { 
-   cout<<"2. mark cell a2 as X"<<endl;
-  }   
-if(array[0][2]==0)
-  { 
-   cout<<"3. mark cell a3 as X"<<endl;
-  }   
-if(array[1][0]==0)
-  { 
-   cout<<"4. mark cell b1 as X"<<endl;
-  }   
-if(array[1][1]==0)
-  { 
-   cout<<"5. mark cell b2 as X"<<endl;
-  }   
-if(array[1][2]==0)
-  { 
-   cout<<"6. mark cell b3 as X"<<endl;
-  }   
-if(array[2][0]==0)
-  { 
-   cout<<"7. mark cell c1 as X"<<endl;
-  }   
-if(array[2][1]==0)
-  { 
-   cout<<"8. mark cell c2 as X"<<endl;
-  }   
-if(array[2][2]==0)
-  { 
-   cout<<"9. mark cell c3 as X"<<endl;
-  }   
-  break;
- }
+bool move_move(char array[3][3], unsigned int move, char op) {
+  bool found = false;
+  int k = 0, result_i = 0, result_j = 0;
+  for (unsigned int i = 0; i < 3 && !found; i++) {
+    for (unsigned int j = 0; j < 3; j++) {
+      if (array[i][j] == 0) {
+        k++;
+      }
+      if (k == move) {
+        found = true;
+        result_i = i;
+        result_j = j;
+        break;
+      }
+    }
+  }
+  array[result_i][result_j] = op;
 }
+int main() {
+  unsigned int i = 0;
+  char array[3][3] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
+  char op;
+  unsigned int k = 0;
+  short move;
+  bool found = false, ok = true, choose = true;
+  print_pole(array);
+  while (proverka(array)) {
+    if (choose == true)
+      op = 'X';
+    else
+      op = 'O';
+    show_move(array, op);
+    cin >> move;
+    if (move == 10 - i) {
+      cout << "Game Over" << endl;
+      return -1;
+    }
+    while (move < 1 || move > (10 - i)) {
+      cout << endl << "You can`t use this number, please, try again: ";
 
+      cin >> move;
+      if (move == 10 - i) {
+        cout << "Game Over" << endl;
+        return -1;
+      }
+    }
+    move_move(array, move, op);
 
+    if (ok == found) break;
+    print_pole(array);
+    if (win_game(array)) {
+      cout << endl << "Player " << op << " is winner!";
+      cin.get();
+      return 0;
+    }
+    choose = !choose;
+    i++;
+  }
 }
-
-
-
-
-
