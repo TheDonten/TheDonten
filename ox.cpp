@@ -60,22 +60,21 @@ void show_move(char array[3][3], char op) {
   cout << ++k << ". quit" << endl;
 }
 bool win_game(char array[3][3]) {
-  for (unsigned int i = 0; i < 3; i++) {
-    for (unsigned int j = 0; j < 3; j++) {
-      if ((array[i][j] == 'X' || array[i][j] == 'O') &&
-          array[i][j] == array[i][j + 1] && array[i][j] == array[i][j + 2])
-        return true;
-      if ((array[i][j] == 'X' || array[i][j] == 'O') &&
-          array[i][j] == array[i + 1][j] && array[i][j] == array[i + 2][j])
-        return true;
-      if ((array[0][0] == 'X' || array[0][0] == 'O') &&
-          array[0][0] == array[1][1] && array[0][0] == array[2][2])
-        return true;
-      if ((array[0][2] == 'X' || array[0][2] == 'O') &&
-          array[0][2] == array[1][1] && array[0][2] == array[2][0])
-        return true;
-    }
-  }
+  if ((array[0][0] == 'X' || array[0][0] == 'O') &&
+      array[0][0] == array[1][0] && array[0][0] == array[2][0])
+    return true;
+  if ((array[0][2] == 'X' || array[0][2] == 'O') &&
+      array[0][2] == array[1][2] && array[0][2] == array[2][2])
+    return true;
+  if ((array[0][0] == 'X' || array[0][0] == 'O') &&
+      array[0][0] == array[0][1] && array[0][0] == array[0][2])
+    return true;
+  if ((array[1][0] == 'X' || array[1][0] == 'O') &&
+      array[1][0] == array[1][1] && array[1][0] == array[1][2])
+    return true;
+  if ((array[2][0] == 'X' || array[2][0] == 'O') &&
+      array[2][0] == array[2][1] && array[2][0] == array[2][2])
+    return true;
   if ((array[0][0] == 'X' || array[0][0] == 'O') &&
       array[0][0] == array[1][1] && array[0][0] == array[2][2])
     return true;
