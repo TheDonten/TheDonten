@@ -119,7 +119,7 @@ int main() {
   char array[3][3] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
   char op;
   unsigned int k = 0;
-  short move;
+  unsigned int move;
   bool found = false, ok = true, choose = true;
   print_pole(array);
   while (proverka(array)) {
@@ -128,7 +128,10 @@ int main() {
     else
       op = 'O';
     show_move(array, op);
-    cin >> move;
+    string string;
+    getline(cin, string);
+    istringstream stream(string);
+    stream >> move;
     if (move == 10 - i) {
       cout << "Game Over" << endl;
       return -1;
@@ -136,7 +139,9 @@ int main() {
     while (move < 1 || move > (10 - i)) {
       cout << endl << "You can`t use this number, please, try again: ";
 
-      cin >> move;
+      getline(cin, string);
+      istringstream stream(string);
+      stream >> move;
       if (move == 10 - i) {
         cout << "Game Over" << endl;
         return -1;
