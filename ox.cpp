@@ -2,7 +2,7 @@
 #include <sstream>
 using namespace std;
 
-char print_pole(char array[3][3]) {
+void print_pole(char array[3][3]) {
   cout << "    1   2   3" << endl;
   cout << "  +---+---+---+" << endl;
   for (int i = 0; i < 3; i++) {
@@ -96,7 +96,7 @@ bool proverka(char array[3][3]) {
   cout << " No more motion" << endl;
   return false;
 }
-bool move_move(char array[3][3], unsigned int move, char op) {
+void move_move(char array[3][3], unsigned int move, char op) {
   bool found = false;
   int k = 0, result_i = 0, result_j = 0;
   for (unsigned int i = 0; i < 3 && !found; i++) {
