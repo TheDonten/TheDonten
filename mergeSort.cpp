@@ -25,7 +25,7 @@ void mergeSort(double *array, int l, int r) {
   int j=mid+1;
   int *tmp=new int[r];//доп. массив
   for(int step=0;step<r-l+1;step++){//для всех элементов доп.массива
-  	if((j>r) || ((i<=mid) && (array[i]<array[j]))){
+  	if((j>r) || ((i<=mid) && (array[i]<array[j]))){ // j>r для того чтобы последний элемент доп.массива 
   		tmp[step]=array[i];
   		i++;
 	  }
