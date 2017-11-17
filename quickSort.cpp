@@ -21,7 +21,7 @@ void quickSort(double *array, int left, int right) {
   int l_hold = left;//левая граница
   int r_hold = right;// правая граница
   pivot = array[left];
-  while (left < right) // пока границы не сомкнутся {
+  while (left < right)  {
     while ((array[right] >= pivot) && (left < right)) {
       right--;// сдвигаем правую границу пока элемент [right] больше [pivot]
     }
@@ -31,7 +31,7 @@ void quickSort(double *array, int left, int right) {
     }
 
     while ((array[left] <= pivot) && (left < right)) left++;// сдвигаем левую границу пока элемент [left] меньше [pivot]
-    if (left != right)// если границы не сомкнулись {
+    if (left != right) {
       array[right] = array[left]; // перемещаем элемент [left] на место [right]
       right--;// сдвигаем правую границу вправо 
     }
