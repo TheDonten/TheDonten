@@ -21,8 +21,8 @@ void quickSort(double *array, int left, int right) {
   int r = right;
   int main_el = l;
   while (l <= r) {
-    while (array[l] < array[main_el] && l <= right) l++;
-    while (array[r] > array[main_el] && r >= left) r--;
+    while (array[l] < array[main_el] && l < right) l++;
+    while (array[r] > array[main_el] && r > left) r--;
     if (l <= r) {
       swap(array[l], array[r]);
       l++;
