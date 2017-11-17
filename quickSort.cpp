@@ -17,31 +17,21 @@ bool read(double *array, unsigned int size) {
   return true;
 }
 void quickSort(double *array, int left, int right) {
-  int pivot;// разрешающий элемент
-  int l_hold = left;//левая граница
-  int r_hold = right;// правая граница
-  pivot = array[left];
-  while (left < right)  {
-    while ((array[right] >= pivot) && (left < right)) {
-      right--;// сдвигаем правую границу пока элемент [right] больше [pivot]
-    }
-    if (left != right) если границы не сомкнулись {
-      array[left] = array[right]; // перемещаем элемент [right] на место разрешающего
-      left++;// сдвигаем левую границу вправо 
-    }
-
-    while ((array[left] <= pivot) && (left < right)) left++;// сдвигаем левую границу пока элемент [left] меньше [pivot]
-    if (left != right) {
-      array[right] = array[left]; // перемещаем элемент [left] на место [right]
-      right--;// сдвигаем правую границу вправо 
+  int l = left;
+  int r = right;
+  int main_el = l;
+  while (l <= r) {
+    while (array[l] < array[main_el] && l <= right) l++;
+    while (array[r] > array[main_el] && r >= left) r--;
+    if (l <= r) {
+      swap(array[l], array[r]);
+      l++;
+      r--;
     }
   }
-  array[left] = pivot;// ставим разрешающий элемент на место
-  pivot = left;
-  left = l_hold;
-  right = r_hold;
-  if (left < pivot) quickSort(array, left, pivot - 1);// Рекурсивно вызываем сортировку для левой и правой части массива
-  if (right > pivot) quickSort(array, pivot + 1, right);
+
+  if (l < right) quickSort(array, l, right);
+  if (r > left) quickSort(array, left, r);
 }
 void print_array(double *array, unsigned int size) {
   for (unsigned int i = 0; i < size; i++) {
@@ -59,7 +49,7 @@ int main() {
   }
   double *array = new double[size];
   if (read(array, size)) {
-    quickSort(array, 0, size - 1);// вызов функции сортировки
+    quickSort(array, 0, size - 1);
     print_array(array, size);
 
   }
