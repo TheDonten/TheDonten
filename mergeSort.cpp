@@ -15,18 +15,15 @@ bool read(double *array, unsigned int size) {
   return true;
 }
 void mergeSort(double *array, int l, int r) {
-  if (l == r) return;  //границы сомкнулись
+  if (l == r) return;
   int mid = (l + r) / 2;
   mergeSort(array, l, mid);
   mergeSort(array, mid + 1, r);
   int i = l;
   int j = mid + 1;
-  int *tmp = new int[r - l + 1];  //доп. массив
-  for (int step = 0; step < r - l + 1;
-       step++) {  //для всех элементов доп.массива
-    if ((j > r) || ((i <= mid) &&
-                    (array[i] < array[j]))) {  // j>r для того чтобы последний
-                                               // элемент записался доп.массива
+  int *tmp = new int[r - l + 1];
+  for (int step = 0; step < r - l + 1; step++) {
+    if ((j > r) || ((i <= mid) && (array[i] < array[j]))) {
       tmp[step] = array[i];
       i++;
     } else {
@@ -34,7 +31,7 @@ void mergeSort(double *array, int l, int r) {
       j++;
     }
   }
-  for (int step = 0; step < r - l + 1; step++) {  //копируем в исходный массив
+  for (int step = 0; step < r - l + 1; step++) {
     array[l + step] = tmp[step];
   }
 
