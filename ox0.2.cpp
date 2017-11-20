@@ -118,7 +118,7 @@ void move_move(char array[5][5], unsigned int move, char op) {
 }
 int main() {
   unsigned int i = 0;
-  char array[5][5] = {0};
+  char array[5][5] = {};
   char op;
   unsigned int k = 0;
   unsigned int move;
