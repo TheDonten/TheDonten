@@ -4,13 +4,11 @@
 using namespace std;
 
 bool read(double *array, unsigned int size) {
-  bool k = true;
   string mas;
   getline(cin, mas);
   istringstream stream(mas);
   for (int i = 0; i < size; i++) {
     if (!(stream >> array[i])) {
-      k = false;
       return false;
     }
   }
