@@ -23,7 +23,7 @@ void mergeSort(double *array, int l, int r) {
   mergeSort(array,mid+1,r);
   int i=l;
   int j=mid+1;
-  int *tmp=new int[r];//доп. массив
+  int *tmp=new int[r-l+1];//доп. массив
   for(int step=0;step<r-l+1;step++){//для всех элементов доп.массива
   	if((j>r) || ((i<=mid) && (array[i]<array[j]))){ // j>r для того чтобы последний элемент записался доп.массива 
   		tmp[step]=array[i];
@@ -36,7 +36,8 @@ void mergeSort(double *array, int l, int r) {
   }
   for (int step = 0; step < r - l + 1; step++)//копируем в исходный массив
     array[l + step] = tmp[step];
-
+}
+delete[] tmp;
 }
 void print_array(double *array, unsigned int size) {
   for (unsigned int i = 0; i < size; i++) {
