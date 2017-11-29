@@ -18,8 +18,7 @@ void print_pole(int array[4][4]) {
                << "0" << array[i][j];
       } else
         cout << " | " << array[i][j];
-      if (array[i][j] == 0)
-        cout << " ";
+      if (array[i][j] == 0) cout << " ";
     }
     cout << " | " << endl;
   }
@@ -122,25 +121,37 @@ int main() {
       case 'l': {
         right(array);
         print_pole(array);
-        win(array);
+        if (win(array)) {
+          cout << "Win" << endl;
+          return -1;
+        }
         break;
       }
       case 'h': {
         vlevo(array);
         print_pole(array);
-        win(array);
+        if (win(array)) {
+          cout << "Win" << endl;
+          return -1;
+        }
         break;
       }
       case 'k': {
         verh(array);
         print_pole(array);
-        win(array);
+        if (win(array)) {
+          cout << "Win" << endl;
+          return -1;
+        }
         break;
       }
       case 'j': {
         vniz(array);
         print_pole(array);
-        win(array);
+        if (win(array)) {
+          cout << "Win" << endl;
+          return -1;
+        }
         break;
       }
       case 'q': {
