@@ -43,7 +43,7 @@ bool readAnyfile(string &Anyfile) {
     getline(cin, string);
     istringstream stream(string);
     if (!(stream >> Anyfile)) {
-        result = false;//write false
+        result = false;
     }
     return result;
 }
