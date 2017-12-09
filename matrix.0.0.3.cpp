@@ -35,21 +35,7 @@ float** writeFile(unsigned int& rows, unsigned int& columns, string Anyfile) {
   fin.close();
   return matrix;
 }
-/*bool readAnyfile(string& Anyfile) {
-  bool result = true;
-  string string="C:\\Users\\Donten\\Desktop\\";
-  getline(cin, string);
-  istringstream stream(string);
-  if (stream >> Anyfile) {
-        string stroka;
-        getline(cin,stroka);
-        istringstream stream(stroka);
-        if(strea)
 
-    result = true;
-  }
-  return false;
-}*/
 float** sub(float** matrix1,
             float** matrix2,
             float**& matrix,
