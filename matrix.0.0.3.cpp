@@ -35,16 +35,21 @@ float** writeFile(unsigned int& rows, unsigned int& columns, string Anyfile) {
   fin.close();
   return matrix;
 }
-bool readAnyfile(string& Anyfile) {
+/*bool readAnyfile(string& Anyfile) {
   bool result = true;
-  string string;
+  string string="C:\\Users\\Donten\\Desktop\\";
   getline(cin, string);
   istringstream stream(string);
-  if (!(stream >> Anyfile)) {
-    result = false;
+  if (stream >> Anyfile) {
+        string stroka;
+        getline(cin,stroka);
+        istringstream stream(stroka);
+        if(strea)
+
+    result = true;
   }
-  return result;
-}
+  return false;
+}*/
 float** sub(float** matrix1,
             float** matrix2,
             float**& matrix,
@@ -201,18 +206,27 @@ float** gauss(float**& matrix, float** matrix1, int rows) {
 int main() {
   unsigned int rows1 = 0, rows2 = 0, columns1 = 0, columns2 = 0;
   char op;
-  string Anyfile1, Anyfile2;
+  string Anyfile1 = "C:\\Users\\Donten\\Desktop\\";
+  string Anyfile2 = "C:\\Users\\Donten\\Desktop\\";
   float** matrix1 = new float*[rows1];
   float** matrix;
-  if (readAnyfile(Anyfile1)) {
+  string string;
+  getline(cin, string);
+  istringstream stream(string);
+
+  if (stream >> Anyfile1 && stream >> op) {
     matrix1 = writeFile(rows1, columns1, Anyfile1);
-    cin >> op;
     if (op == 'T') {
       trans(matrix1, matrix, rows1, columns1);
       write(cout, matrix, columns1, rows1);
-    } else if (op == '+' && rows1 == columns1) {
-      cin.get();
-      if (readAnyfile(Anyfile2)) {
+    }
+    if (rows1 == columns1 && op == 'R') {
+      float** matrix3 = new float*[rows1];
+      write(cout, gauss(matrix3, matrix1, rows1), rows1, columns1);
+      delete_memory(matrix3, rows1);
+    }
+    if (stream >> Anyfile2) {
+      if (op == '+' && rows1 == columns1) {
         float** matrix2 = new float*[rows2];
         matrix2 = writeFile(rows2, columns2, Anyfile2);
         if (rows1 == rows2 && columns2 == columns1) {
@@ -222,13 +236,7 @@ int main() {
         } else
           cout << "An error has occured while reading input data";
         delete_memory(matrix2, rows1);
-      }
-    }
-
-    else if (op == '-' && rows1 == columns1) {
-      cin.get();
-
-      if (readAnyfile(Anyfile2)) {
+      } else if (op == '-' && rows1 == columns1) {
         float** matrix2 = new float*[rows2];
         matrix2 = writeFile(rows2, columns2, Anyfile2);
         if (rows1 == rows2 && columns2 == columns1) {
@@ -238,12 +246,7 @@ int main() {
         } else
           cout << "An error has occured while reading input data";
         delete_memory(matrix2, rows1);
-      }
-    }
-
-    else if (op == '*' && rows1 == columns1) {
-      cin.get();
-      if (readAnyfile(Anyfile2)) {
+      } else if (op == '*' && rows1 == columns1) {
         float** matrix2 = new float*[rows2];
         matrix2 = writeFile(rows2, columns2, Anyfile2);
 
@@ -256,14 +259,6 @@ int main() {
         delete_memory(matrix2, rows1);
       }
     }
-
-    else if (rows1 == columns1 && op == 'R') {
-      float** matrix3 = new float*[rows1];
-      write(cout, gauss(matrix3, matrix1, rows1), rows1, columns1);
-      delete_memory(matrix3, rows1);
-    } else
-      cout << "An error has occured while reading input data";
-
   } else
     cout << "An error has occured while reading input data";
   delete_memory(matrix1, rows1);
