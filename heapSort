@@ -34,6 +34,15 @@ void shiftdown(double* array, int m, int size) {
       break;
   }
 }
+void heapSort(double* array, int size) {
+  for (int m = (size / 2 - 1); m >= 0; m--) {
+    shiftdown(array, m, size);
+  }
+  for (int m = size; m >= 1; m--) {
+    swap(array[m], array[0]);
+    shiftdown(array, 0, m);
+  }
+}
 
 void print_array(double* array, unsigned int size) {
   for (unsigned int i = 0; i < size; i++) {
