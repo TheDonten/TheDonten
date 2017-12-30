@@ -15,24 +15,24 @@ bool read(double* array, unsigned int size) {
   return true;
 }
 void shiftdown(double* array, int m, int size) {
-  while(m<=size){
-  int l = 2 * m + 1;
-  int r = 2 * m + 2;
-  int maxchild = m;
+  while (m <= size) {
+    int l = 2 * m + 1;
+    int r = 2 * m + 2;
+    int maxchild = m;
 
-  if (l < size && array[l] > array[maxchild]) {
-    maxchild = l;
-  }
-  if (r < size && array[r] > array[maxchild]) {
-    maxchild = r;
-  }
+    if (l < size && array[l] > array[maxchild]) {
+      maxchild = l;
+    }
+    if (r < size && array[r] > array[maxchild]) {
+      maxchild = r;
+    }
 
-  if (maxchild != m) {
-    swap(array[m], array[maxchild]);
-    m=maxchild;
+    if (maxchild != m) {
+      swap(array[m], array[maxchild]);
+      m = maxchild;
+    } else
+      break;
   }
-  else break;
-}
 }
 
 void print_array(double* array, unsigned int size) {
