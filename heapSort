@@ -14,7 +14,8 @@ bool read(double* array, unsigned int size) {
   }
   return true;
 }
-shiftdown(double* array, int m, int size) {
+void shiftdown(double* array, int m, int size) {
+  while(m<=size){
   int l = 2 * m + 1;
   int r = 2 * m + 2;
   int maxchild = m;
@@ -28,17 +29,10 @@ shiftdown(double* array, int m, int size) {
 
   if (maxchild != m) {
     swap(array[m], array[maxchild]);
-    shiftdown(array, maxchild, size);
+    m=maxchild;
   }
+  else break;
 }
-void heapSort(double* array, int size) {
-  for (int m = (size / 2 - 1); m >= 0; m--) {
-    shiftdown(array, m, size);
-  }
-  for (int m = size; m >= 1; m--) {
-    swap(array[m], array[0]);
-    shiftdown(array, 0, m);
-  }
 }
 
 void print_array(double* array, unsigned int size) {
