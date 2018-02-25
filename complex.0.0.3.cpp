@@ -37,8 +37,7 @@ public:
         return result;
     }
     complex_t add(complex_t other) const
-    { // complex_t const * const
-        // нельзя this = &other;
+    {
         complex_t result;
         result.real = this->real + other.real;
         result.imag = this->imag + other.imag;
