@@ -49,7 +49,7 @@ class complex_t {
     return stream;
   }
   ostream& write(std::ostream& stream) {
-    return stream << '(' << real << ", " << imag << ')';
+    return stream << '(' << real << "," << imag << ')';
   }
   ~complex_t() {}
 
