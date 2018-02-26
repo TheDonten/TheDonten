@@ -29,7 +29,7 @@ class matrix_t {
         }
       }
     } else
-      perror("Wrong: ");
+      cout << " An error has occured while reading input data";
     return result;
   }
   matrix_t sub(matrix_t& other) const {
@@ -45,7 +45,7 @@ class matrix_t {
         }
       }
     } else
-      perror("Wrong; ");
+      cout << " An error has occured while reading input data";
     return result;
   }
   matrix_t mult(matrix_t& other) const {
@@ -61,7 +61,7 @@ class matrix_t {
         }
       }
     } else
-      perror("Wrong: ");
+      cout << " An error has occured while reading input data";
     return result;
   }
 
@@ -85,8 +85,7 @@ class matrix_t {
           }
         }
       }
-    } else
-      perror("Wrong: ");
+    }
     return stream;
   }
 
