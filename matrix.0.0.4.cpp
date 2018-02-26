@@ -103,6 +103,7 @@ class matrix_t {
       }
     }
     cout << endl;
+   return stream;
   }
   ~matrix_t() {}
 };
