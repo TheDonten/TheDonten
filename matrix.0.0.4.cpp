@@ -76,6 +76,7 @@ class matrix_t {
         result.data[i][j] = this->data[j][i];
       }
     }
+   return result;
   }
   ifstream& read(std::ifstream& stream, string Anyfile) {
     stream.open(Anyfile);
