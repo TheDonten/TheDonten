@@ -108,32 +108,35 @@ int main() {
   getline(cin, string);
   istringstream stream(string);
   if (stream >> Anyfile1 && stream >> op) {
-    matrix1.read(fin1, Anyfile1);
-    if (op == 'T') {
-      matrix1.trans();
-      matrix1.write(cout);
-    } else if (stream >> Anyfile2 && (op == '+' || op == '*' || op == '-')) {
-      matrix2.read(fin2, Anyfile2);
-      switch (op) {
-        case '+': {
-          result = matrix1.add(matrix2);
-          result.write(cout);
-          break;
-        }
-        case '*': {
-          result = matrix1.mult(matrix2);
-          result.write(cout);
-          break;
-        }
-        case '-': {
-          result = matrix1.sub(matrix2);
-          result.write(cout);
-          break;
-        }
-      }
-
+    if (matrix1.read(fin1, Anyfile1)) {
+      if (op == 'T') {
+        matrix1.trans();
+        matrix1.write(cout);
+      } else if (stream >> Anyfile2 && (op == '+' || op == '*' || op == '-')) {
+        if (matrix2.read(fin2, Anyfile2)) {
+          switch (op) {
+            case '+': {
+              result = matrix1.add(matrix2);
+              result.write(cout);
+              break;
+            }
+            case '*': {
+              result = matrix1.mult(matrix2);
+              result.write(cout);
+              break;
+            }
+            case '-': {
+              result = matrix1.sub(matrix2);
+              result.write(cout);
+              break;
+            }
+          }
+        } else
+          cout << "An error has occured while reading input data";
+      } else
+        cout << " An error has occured while reading input data";
     } else
-      cout << " An error has occured while reading input data";
+      cout << "An error has occured while reading input data";
   } else
     cout << "An error has occured while reading input data";
 
