@@ -66,9 +66,14 @@ class matrix_t {
   }
 
   matrix_t trans() const {
+    matrix_t result;
+    result.rows = this->rows;
+    result.collumns = this->collumns;
+    result.data = new int*[rows];
     for (unsigned int i = 0; i < rows; i++) {
+      result.data[i] = new int[collumns];
       for (unsigned int j = 0; j < collumns; j++) {
-        data[i][j] = data[j][i];
+        result.data[i][j] = this->data[j][i];
       }
     }
   }
