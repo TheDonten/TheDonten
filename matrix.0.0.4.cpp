@@ -91,6 +91,7 @@ class matrix_t {
         }
       }
     }
+    stream.close();
     return stream;
   }
 
