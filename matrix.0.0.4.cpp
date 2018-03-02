@@ -16,6 +16,38 @@ class matrix_t {
     rows = 0;
     collumns = 0;
   }
+
+  matrix_t(const matrix_t& other) {
+    rows = other.rows;
+    collumns = other.collumns;
+    data = new int*[rows];
+    for (unsigned int i = 0; i < rows; ++i) {
+      data[i] = new int[collumns];
+      for (unsigned int j = 0; j < collumns; ++j) {
+        data[i][j] = other.data[i][j];
+      }
+    }
+  }
+  matrix_t& operator=(const matrix_t& other) {
+    if (this != &other) {
+      if (data != nullptr && rows && collumns) {
+        for (unsigned int i = 0; i < rows; ++i) {
+          delete[] data[i];
+        }
+        delete[] data;
+      }
+      rows = other.rows;
+      collumns = other.collumns;
+      data = new int*[rows];
+      for (unsigned int i = 0; i < rows; ++i) {
+        data[i] = new int[collumns];
+        for (unsigned int j = 0; j < collumns; ++j) {
+          data[i][j] = other.data[i][j];
+        }
+      }
+      return *this;
+    }
+  }
   matrix_t add(matrix_t& other) const {
     matrix_t result;
     if (this->rows == other.rows && this->collumns == other.collumns) {
@@ -76,7 +108,7 @@ class matrix_t {
         result.data[i][j] = this->data[j][i];
       }
     }
-   return result;
+    return result;
   }
   ifstream& read(std::ifstream& stream, string Anyfile) {
     stream.open(Anyfile);
@@ -104,9 +136,14 @@ class matrix_t {
       }
     }
     cout << endl;
-   return stream;
+    return stream;
   }
-  ~matrix_t() {}
+  ~matrix_t() {
+    for (unsigned int i = 0; i < rows; i++) {
+      delete[] data[i];
+    }
+    delete[] data;
+  }
 };
 int main() {
   matrix_t matrix1, matrix2, result;
