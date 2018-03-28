@@ -141,7 +141,7 @@ int main() {
   }
   //  cin>>value;
   //  tree1.insert(value);
-  if(tree1.find(4) == true) {cout<<"pidar";}
+  if(tree1.find(4) == true) {cout<<"mehhhh";}
   tree1.print(cout, 0, tree1.root());
    
   return 0;
