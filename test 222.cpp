@@ -19,10 +19,26 @@ public:
     node_t* head_() const{
         return head;
     }
-    queue_t(queue_t const& other){
-       // this->head =
+    queue_t &operator =(queue_t const& other){
+       if(other.head){
+             node_t * node;
+  while(head!=nullptr){
+  node = head->next;
+  delete head;
+  head = node;
+
+}
+      
+       }
+     node_t* p = other.head;
+     while( p!= nullptr){
+         push(p->value);
+         p = p->next;
+           
     }
-    void push(T value) {
+   return  *this;
+}
+    void push(T  value) {
         node_t* node = new node_t;
         node->value=value;
         node->next= nullptr;
@@ -57,12 +73,29 @@ void write(std::ostream & stream, node_t* head){
         p = p->next;
     }
 }
+~queue_t(){
+    node_t * node;
+  while(head!=nullptr){
+  node = head->next;
+  delete head;
+  head = node;
+}
+}
 };
 
 int main(){
-    queue_t<int> q1;
-    int value;
-    for(int i=0; i<3; i++)
+    queue_t q1;
+    queue_t q2;
+    q1.push(1);
+    q1.push(2);
+    q1.push(3);
+    q2.push(5);
+    q2.push(6);
+    q2.push(7);
+    q1 = q2;
+    q1.write(cout,q1.head_());
+}
+    /*for(int i=0; i<3; i++)
     {
         cin>>value;
         q1.push(value);
@@ -71,5 +104,5 @@ int main(){
     q1.write(cout,q1.head_());
     //q1.pop_back();
     if(2 ==q1.pop_back()) cout<<"Okay"<<endl;
-    q1.write(cout,q1.head_());
-}
+    q1.write(cout,q1.head_());*/
+    
