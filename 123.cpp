@@ -124,8 +124,12 @@ public:
             auto pair = min_(removed_node->right, removed_node);
             auto leftest_node = pair.first;
             auto leftest_node_parent = pair.second;
+
             transplant(leftest_node->right, leftest_node_parent, false);
+            if(leftest_node == leftest_node_parent->right) leftest_node_parent->right = nullptr;
+            if(leftest_node == leftest_node_parent->left) leftest_node_parent->left = nullptr;
             transplant(leftest_node, removed_node_parent, true);
+
         }
 
         delete removed_node;
@@ -155,7 +159,6 @@ public:
     };
     void transplant(node_t* node, node_t* parent, bool move_children) {
         if (!node) {
-            parent -> left = node;
             return;
         }
         node_t* child = nullptr;
@@ -174,8 +177,8 @@ public:
             }
 
             if (move_children && child) {
-                if (node->value != child->left->value) node->left = child->left;
-                if (node->value != child->right->value) node->right = child->right;
+                 node->left = child->left;
+                 node->right = child->right;
                 child->left = nullptr;
                 child->right = nullptr;
             }
@@ -219,10 +222,10 @@ int main() {
      istringstream stream(string);
      stream>> value;*/
 
-    // tree_t tree1 {8,11,9,10,14,12,13,15};
+     tree_t tree1 {8,11,9,10,14,12,13,15};
     // tree_t tree2 {8,11,9,10,14,12,13,15};
     // tree_t tree1 {3,2,4,5,1};
-    tree_t tree1{3, 1, 6, 5, 7};
+    //tree_t tree1{3,1,5,4,7,6};
     tree1.print(cout, 0, tree1.root());
     cin >> value;
     tree1.remove(value);
