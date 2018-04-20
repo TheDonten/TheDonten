@@ -1,17 +1,13 @@
 #include <iostream>
 #include <cassert>
-#include <sstream>
-#include <string>
-#include <valarray>
-#include <fstream>
-#include <initializer_list>
 using namespace std;
+template <typename T>
 class tree_t {
 private:
     struct node_t {
         node_t* left;
         node_t* right;
-        int value;
+        T value;
     };
 
 private:
@@ -26,7 +22,7 @@ public:
             insert(key);
         }
     }
-    void insert(int value) {
+    void insert(T value) {
         node_t* node = new node_t;
         node->value = value;
         node->right = nullptr;
@@ -56,7 +52,7 @@ public:
                 return;
         }
     }
-    bool find(int value) const {
+    bool find(T value) const {
         node_t* node = root_;
         while (node != nullptr) {
             if (node->value == value) {
@@ -104,7 +100,16 @@ public:
             default: { cout << "invalid operation"; }
         }
     }
-    bool remove(int value) {
+    void act(char op, int value){
+        switch (op){
+            case '+':{
+                insert(value);
+                break;
+            }
+        }
+    }
+
+    bool remove(T value) {
         auto pair = find_(value);
         if (!pair.first) {
             return false;
@@ -113,7 +118,11 @@ public:
         auto removed_node = pair.first;
         auto removed_node_parent = pair.second;
 
-        if (!removed_node->left && !removed_node->right) {
+        if (!removed_node->left && !removed_node->right && removed_node != root_) {
+
+                if (removed_node == removed_node_parent->right) removed_node_parent->right = nullptr;
+                if (removed_node == removed_node_parent->left) removed_node_parent->left = nullptr;
+
         } else if (removed_node->left && !removed_node->right) {
             transplant(removed_node->left, removed_node_parent, false);
         } else if (removed_node->right && !removed_node->left) {
@@ -133,9 +142,10 @@ public:
         }
 
         delete removed_node;
+
     }
 
-    std::pair<node_t*, node_t*> find_(int value) {
+    std::pair<node_t*, node_t*> find_(T value) {
         node_t* node = root_;
         node_t* parent = nullptr;  // родитель элемента, которого нам нужно удалить
         while ((node != nullptr) && (node->value != value)) {
@@ -163,6 +173,7 @@ public:
         }
         node_t* child = nullptr;
         if (parent == nullptr) {
+
             node->left = root_->left;
             node->right = root_->right;
             root_ = node;
@@ -177,8 +188,8 @@ public:
             }
 
             if (move_children && child) {
-                 node->left = child->left;
-                 node->right = child->right;
+                node->left = child->left;
+                node->right = child->right;
                 child->left = nullptr;
                 child->right = nullptr;
             }
@@ -202,59 +213,15 @@ public:
             return false;
     }
 
-    auto operator==(tree_t const& other) const {
+    bool operator==(tree_t const& other) const {
         return euqal(root_, other.root_);
     }
 
     void print(std::ostream& stream) const { print(stream, 0, root_); }
 };
-
-std::ostream& operator<<(std::ostream& stream, tree_t const& tree) {
-    tree.print(stream);
-    return stream;
-}
-
-int main() {
-    string string;
-    int value;
-    char op;
-    /* getline(cin, string);
-     istringstream stream(string);
-     stream>> value;*/
-
-     tree_t tree1 {8,11,9,10,14,12,13,15};
-    // tree_t tree2 {8,11,9,10,14,12,13,15};
-    // tree_t tree1 {3,2,4,5,1};
-    //tree_t tree1{3,1,5,4,7,6};
-    tree1.print(cout, 0, tree1.root());
-    cin >> value;
-    tree1.remove(value);
-    tree1.print(cout, 0, tree1.root());
-    // tree2.print(cout,0,tree2.root());
-    // tree1 == tree2;
-    /*cin>>value;
-    tree1.insert(value);
-
-    cin>>value;
-    tree1.insert(value);
-    cin>>value;
-    tree1.insert(value);
-    cout<<endl;
-    cout<<endl;
-
-    tree1.print(cout);*/
-    /*for(unsigned int i=0; i<8; i++) {
-        cin>>value;
-        tree1.insert(value);
-    }
-    tree1.print(cout, 0, tree1.root());
-
-    cin>>value;
-    tree1.remove(value);
-    tree1.print(cout, 0, tree1.root());*/
-    //  cin>>value;
-    //  tree1.insert(value);
-    // if(tree1.find(4) == true) {cout<<"meh"<<endl;}
-
-    // return 0;
+int main(){
+ tree_t <int> tree1 {8};
+  tree1.print(cout,0,tree1.root());
+   tree1.remove(8);
+    tree1.print(cout,0,tree1.root());
 }
