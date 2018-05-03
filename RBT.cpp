@@ -57,14 +57,10 @@ class RBT {
         if (vetka->left != nullptr) {
           vetka = vetka->left;
         } else {
-          vetka->left = new node_t;
+          vetka->left = node;
           vetka->left->parent = vetka;
-          vetka = vetka->left;
-          vetka->left = nullptr;
-          vetka->right = nullptr;
-          vetka->value = value;
-          vetka->color = true;
-          insert_case1(vetka);
+          vetka->right->color = true;
+          insert_case1(vetka->left);
           return;
         }
       } else
