@@ -157,54 +157,69 @@ public:
     }
     void replace_node(node_t* node, node_t* child){
         node_t* g = grandparent(child);
+        node_t* child_childs;
+        if(child->left) child_childs = child->left;
+        else child_childs = child->right;
         child->parent = g;
         if(g) {
             if(g->left == node) g->left = child;
             else g->right = child;
+        }
+        if(node->right == child){
+            if(child_childs){
+                node->right = child_childs;
+                child_childs->parent = node;
             }
-            if(node->right = child){
             child->right=node;
-            if(node->left) child->left = node->left;
+            if(node->left) {child->parent = node->left;
+                child->left = node->left;}
         }
-       else {
+        else {
+            if(child_childs) {node->left = child_childs;
+                child_childs->parent = node;
+            }
             child->left = node;
-            if(node->right) child->right = node->right;
+            node->parent = child;
+            if(node->right) { child->parent = node->right;
+                child->right = node->right;}
         }
-        node->parent = child;
-        node->left = nullptr;
-        node->right = nullptr;
+
     }
-   void free(node_t*  & node){
-     node_t* p = node->parent;
-     node->parent = nullptr;
-     if( p->left == node) p->left= nullptr;
-     else p->right = nullptr;
-     delete node;
+    void free(node_t*  & node){
+        node_t* p = node->parent;
+        node->parent = nullptr;
+        if( p->left == node) {
+            if(node->left) p->left = node->left;
+            else p->left= nullptr;}
+        else { if(node->right) p->right = node->right;
+            else p->right = nullptr;}
+        delete node;
     }
     void delete_case1(node_t* node){
         if(node->parent != nullptr)
             delete_case2(node);
     }
     void delete_case2(node_t* node){
-         node_t* s = sibling(node);
-         if(!(s)) return;
-         if(s->color == true){
-             node->parent->color = true;
-             s->color = false;
-             if(node == node->parent->left)
-                 rotate_left(node->parent);
-             else
-                 rotate_right(node->parent);
-         }
-         delete_case3(node);
+        node_t* s = sibling(node);
+        if(!(s)) return;
+        if(s->color == true){
+            node->parent->color = true;
+            s->color = false;
+            if(node == node->parent->left)
+                rotate_left(node->parent);
+            else
+                rotate_right(node->parent);
+        }
+        delete_case3(node);
     }
     void delete_case3(node_t* node){
-      node_t* s = sibling(node);
-      if (!(s->left) || !(s->right)) return;
-      if((node->parent->color == false) &&(s->color==false) && (s->left->color == false) && (s->right->color == false)){
-          s->color = true;
-          delete_case1(node->parent);
-      }else delete_case4(node);
+        node_t* s = sibling(node);
+        if(s->left == nullptr) return;
+        else if(s->right == nullptr) return;
+        if((node->parent->color == false) &&(s->color==false) && (s->left->color == false) && (s->right->color == false)){
+            s->color = true;
+            delete_case1(node->parent);
+        }else delete_case4(node);
 
     }
     void delete_case4(node_t* node){
@@ -254,14 +269,18 @@ public:
         free(node);
     }
     bool remove(int key){
+
         if(!(root_)){
             throw std::invalid_argument("root_ = nullptr");
         }
         node_t * vetka = root_;
-        while( vetka->value != key && vetka != nullptr){
-            if(vetka->value < key)
-                vetka = vetka->right;
-            else vetka = vetka->left;
+        while(vetka){
+            if(vetka->value == key) break;
+            else {
+                if(key < vetka->value) vetka = vetka->left;
+                else vetka = vetka->right;
+            }
+            if(!(vetka)) return false;
         }
         if(vetka) {
             if (vetka->left == nullptr && vetka->right != nullptr) {
@@ -270,41 +289,88 @@ public:
                 delete_one_child(vetka, vetka->left);
             }
             else if(vetka->left == nullptr && vetka->right == nullptr){
+                delete_case1(vetka);
                 free(vetka);
             }
             else if(vetka->right && vetka->left){
                 if(vetka->color == true){
-                    node_t * child(vetka);
-                    
+                    node_t * child= choose_left_child(vetka);
+                    if(child->color == true) {
+                        swap_child_parent(vetka,child);
+                        if (!(vetka->left) && !(vetka->right)) free(vetka);
+                        else if (vetka->right) {
+                            delete_one_child(vetka, vetka->right);
+                        }
+                    }
+                    else if(child->color == false) {
+                        swap_child_parent(vetka,child);
+                        if(!(vetka->left) && !(vetka->right)) free(vetka);
+                        else if(vetka->right){
+                            delete_one_child(vetka, vetka->right);
+                        }
+                    }
+                }
+                else if(vetka->color == false){
+                    node_t* child = choose_left_child(vetka);
+                    if(child->color == true){
+                        swap_child_parent(vetka,child);
+                        child->color = false;
+                        if(!(vetka->left) && !(vetka->right)) free(vetka);
+                        else if(vetka->right) delete_one_child(vetka,vetka->right);
+                    }
+                    else if(child->color ==false){
+                        swap_child_parent(vetka,child);
+                        if(!(vetka->left) && !(vetka->right)) {
+                            delete_case1(vetka);
+                            free(vetka);}
+                        else if(vetka->right) delete_one_child(vetka,vetka->right);
+                    }
                 }
             }
         }
+        else return false;
     }
     node_t* choose_left_child(node_t* node){
         node_t* vetka = node->right;
         while(vetka->left){
             vetka=vetka->left;
         }
+        return vetka;
     }
     void swap_child_parent(node_t* node,node_t* child){
-        node_t* g = grandparent(node);
+
+        node_t* node_parent = node->parent;
         node_t* parent_child = child->parent;
         node_t* right_child = node->right;
-        child->parent = g;
-        if(g){
-        if(g->right == node){
-            g->right = child;
-           }
-         else{
-            g->left = child;
-         }
+        child->parent = node_parent;
+        if(node_parent){
+            if(node_parent->right == node){
+                node_parent->right = child;
+            }
+            else{
+                node_parent->left = child;
+            }
         }
-        if(node->left) child->left = node->left;
+        else root_ = child;
         node->right = child->right;
-        parent_child->left = node;
-        node->parent = child->parent;
-        child->right = right_child;
-        
+        if(node->left) {
+            node->left->parent = child;
+            child->left = node->left;
+            node->left = nullptr;}
+
+
+        if(node != parent_child){parent_child->left = node;
+            node->parent = parent_child;
+            child->right = right_child;
+            right_child->parent = child;}
+        else {
+            node->left = child->right;
+            child->right = node;
+            node->parent = child;
+        }
+
+
+
     }
     void print(std::ostream& stream, int level, node_t* node) const {
         if (node == nullptr) return;
@@ -315,9 +381,9 @@ public:
             stream << "---";
         }
         if(node->color == false)
-      stream << node->value <<"B"<< std::endl;
+            stream << node->value <<"B"<< std::endl;
         if(node->color == true)
-           stream << node->value <<"R"<< std::endl;
+            stream << node->value <<"R"<< std::endl;
         print(stream, level + 1, node->left);
     }
     void destroy(node_t* node) {
@@ -335,15 +401,17 @@ int main() {
     int value;
 
     RBT<int> sp1;
-    for (unsigned int i = 0; i < 8; i++) {
-        std::cin>>value;
-        sp1.insert(value);
+    for (unsigned int i = 0; i < 17; i++) {
 
-       std:: cout<<std::endl;
-      std::   cout<<std::endl;
+        sp1.insert(i);
+
+        std:: cout<<std::endl;
+        std::   cout<<std::endl;
 
     }
     //sp1.print(std::cout, 0, sp1.root());
-    //sp1.remove(3);
+    // sp1.remove(7);
+
+
     sp1.print(std::cout, 0, sp1.root());
 }
