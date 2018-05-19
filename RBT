@@ -274,10 +274,37 @@ public:
             }
             else if(vetka->right && vetka->left){
                 if(vetka->color == true){
+                    node_t * child(vetka);
                     
                 }
             }
         }
+    }
+    node_t* choose_left_child(node_t* node){
+        node_t* vetka = node->right;
+        while(vetka->left){
+            vetka=vetka->left;
+        }
+    }
+    void swap_child_parent(node_t* node,node_t* child){
+        node_t* g = grandparent(node);
+        node_t* parent_child = child->parent;
+        node_t* right_child = node->right;
+        child->parent = g;
+        if(g){
+        if(g->right == node){
+            g->right = child;
+           }
+         else{
+            g->left = child;
+         }
+        }
+        if(node->left) child->left = node->left;
+        node->right = child->right;
+        parent_child->left = node;
+        node->parent = child->parent;
+        child->right = right_child;
+        
     }
     void print(std::ostream& stream, int level, node_t* node) const {
         if (node == nullptr) return;
@@ -308,9 +335,9 @@ int main() {
     int value;
 
     RBT<int> sp1;
-    for (unsigned int i = 1; i < 25; i++) {
-
-        sp1.insert(i);
+    for (unsigned int i = 0; i < 8; i++) {
+        std::cin>>value;
+        sp1.insert(value);
 
        std:: cout<<std::endl;
       std::   cout<<std::endl;
