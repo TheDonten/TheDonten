@@ -162,11 +162,13 @@ public:
               if(child_left->right ) {child_left_parent->left = child_left->right;
                                     child_left->right = nullptr; 
               }
+              else child_left_parent->left = nullptr;
               if(parent){
                   if(parent->right == node) parent->right = child_left;
                   else parent->left = child_left;
               }
               else root_ = child_left;
+                                      
              
               if(node->right != child_left){child_left->right = node->right;
               node->right = nullptr;}
