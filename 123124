@@ -1,0 +1,21 @@
+// Example program
+#include <iostream>
+#include <string>
+#include <any>
+#include <map>
+#include <sstream>
+class Json
+{
+   public:
+    Json(const std::string& s);
+     
+     std::any& operator[](const std::string& key);
+    
+    };
+int main()
+{
+  std::string stroka;
+  std::getline(std::cin, stroka);
+  std::istringstream stream(stroka);
+  std::cout<<stroka;
+}
