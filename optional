@@ -1,0 +1,36 @@
+#include <iostream>
+#include<string>
+#include<sstream>
+#include<any>
+class optional {
+private:
+	std::pair<int, bool> p;
+public:
+	optional() {
+		p.second = false;
+	}
+	optional(const int& value) {
+		p.first = value;
+		p.second = true;
+	}
+
+	int value() {
+		if (p.second) return p.first;
+		else throw std::logic_error("none");
+	}
+	bool has_value() {
+		return p.second;
+	}
+	std::any value_or(const char *s) {
+		if (p.second) return p.first;
+		else return s;
+	}
+	~optional() {};
+};
+int main()
+{
+	optional op1(10);
+	std::any a;
+	a = op1.value_or("(none)");
+	
+}
