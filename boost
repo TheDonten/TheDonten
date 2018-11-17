@@ -1,0 +1,153 @@
+// Booost.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include "pch.h"
+#include <iostream>
+
+#include <boost/filesystem.hpp>
+#include <sstream>
+#include <string>
+using namespace boost::filesystem;
+class filesis {
+	private:
+		std::string dir_name;
+		std::string acount;
+		std::string flag;
+		bool is_empty = false;
+		int last_date = 0;
+		int count = 0;
+		
+public:
+	void parse(const path& p) {
+		
+		for (const directory_entry& x : directory_iterator{ p })
+		{
+			
+			std::string str;
+			str = x.path().extension().string();
+			
+			//std::cout << x.path().stem().string() << std::endl;
+			auto y = x.path();
+			if (str == "") {
+				//std::cout << y.stem().string() << std::endl;
+			
+				this->dir_name = y.stem().string();
+				if (flag != dir_name && flag != "" && acount != "") { std::cout << flag << "  " << acount << "  " << count << "  " << last_date << std::endl; 
+				count = 0;
+				last_date = 0;
+				acount.clear();
+				}
+				parse(y);
+			}
+			else if (str == ".txt") {
+				
+				std::string string, check;
+				
+				string = y.stem().string();
+				std::istringstream stream(string);
+				char op ='*';
+				while (op != '.' && stream) stream >> op;
+				while (stream >> op)
+					check.push_back(op);
+			
+				if (check != "old") {
+				   // std::cout << dir_name << "  " << y.filename().string() << std::endl;
+					flag = dir_name;
+				    parse_txt(y.stem().string());
+					
+					
+					
+				}
+				else {}
+			}
+		}
+		
+	}
+	void parse_txt(const std::string& s) {
+		//char op;
+		std::string si = s;
+		char op = 'k';
+		std::istringstream stream(s);
+		while (op != '_') {
+			stream >> op;
+		}
+		std::string acc;
+		std::string data;
+		stream >> op;
+		while (op != '_') {
+			
+			acc.push_back(op);
+			stream >> op;
+		}
+		while (stream >> op) {
+			data.push_back(op);
+		}
+		int m;
+		std::stringstream str(data);
+		str >> m;
+		
+		if (m > last_date) last_date = m;
+		if (acount == "") acount = acc;
+		if (acount != acc ) {
+			
+			std::cout << flag << "  " << acount << "  " << count << "  " << last_date << std::endl;
+			count = 0;
+			last_date = 0;
+			acount = acc;
+		    parse_txt(s);
+		}
+		else { 
+			
+			count += 1; }
+		acount = acc;
+	}
+};
+/*void parse(const path& p) {
+	std::string str;
+	std::vector<std::string> direct_name;
+	for (const directory_entry& x : directory_iterator{ p })
+	{
+		str = x.path().extension().string();
+		//std::cout << x.path().stem().string() << std::endl;
+		auto y = x.path();
+		if (str == "") {
+			//std::cout << y.stem().string() << std::endl;
+			direct_name.push_back(y.stem().string());
+			parse(y);
+		}
+		else if (str == ".txt") {
+
+		}
+	}
+	std::cout << direct_name[0];
+}*/
+int main(int argc, char* argv[])
+{ 
+	/*path p = {"C:/ftp/file.txt"};
+	std::cout << p.filename() << std::endl
+		<< p.stem() << std::endl
+		<< p.extension() << std::endl;*/
+   const path p = { "C:/ftp" };
+   filesis M;
+   M.parse(p);
+
+   // std::cout << "Hello World!\n"; 
+	/*create_directories("sandbox/a/b");
+	std::ofstream("sandbox/file1.txt");
+	std::ofstream("sandbox/file2.txt");*/
+	//for (auto& p : directory_iterator("C:/ftp"))
+		//std::cout << p.path() << '\n';
+	
+	
+}
+//string.find(".old");
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
+//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
+//   2. В окне Team Explorer можно подключиться к системе управления версиями.
+//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
+//   4. В окне "Список ошибок" можно просматривать ошибки.
+//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
+//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
