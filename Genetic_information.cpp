@@ -169,6 +169,14 @@
 		 ++i;
 		 last = last->next;
 	 }
+	 Gen* node = nullptr;
+	 while (head) {
+		 node = head->next;
+		 delete head;
+		 head = node;
+
+	 }
+	
 	 return child;
  }
  Gen* mutation(Gen*& head) {
@@ -212,20 +220,26 @@
 				 deltaX = last->x - deltaX;
 				 deltaY = deltaY - 2;
 				 deltaY = last->y - deltaY;
-				// continue;
+			
 			 }
 			 else if(deltaY >= 2) {
 				 deltaY = deltaY - 2;
 				 deltaY = last->y - deltaY;
 				 deltaX = deltaX - 2;
 				 deltaX = last->x - deltaX;
-				// continue;
+			
 			 }
 			 add_population(child, deltaX, deltaY);
 		 }
 		 last = last->next;
 	 }
+	 Gen* node = nullptr;
+	 while (head) {
+		 node = head->next;
+		 delete head;
+		 head = node;
 
+	 }
 	 return child;
  }
  float Max(Gen*&head) {
@@ -242,8 +256,9 @@
  }
  void GA() {
 	 //иницилизируем
+	 float maxik = 0;
 	 Gen* head = nullptr;
-	 std::vector<float> maximum;
+	 //std::vector<float> maximum;
 	 add(head);
 	 for (int i = 0; i < 3; ++i) {
 		 add(head);
@@ -257,9 +272,9 @@
 		p = p->next;
 	}
 	 std::cout << " VAUUU" << std::endl;
-	 //std::cout << find_min(head) << std::endl;
+	
 	 delete_dudes(head);
-	 for (int i = 0; i < 200; ++i) {
+	 for (int i = 0; i < 100; ++i) {
 		 std::cout << "Numer generations:  " << i + 1 << std::endl;
 		 head = crossover(head);
 		 head = mutation(head);
@@ -273,19 +288,13 @@
 			 p = p->next;
 		 }
 		 delete_dudes(head);
-		 maximum.push_back(Max(head));
+		 //maximum.push_back(Max(head));
+		 if (maxik < Max(head)) maxik = Max(head);
 		 std::cout << "MAX:  " << Max(head) << std::endl;
 	 }
-	 auto it = std::max_element(maximum.begin(), maximum.end());
-	 std::cout << std::endl <<"Max = " << *it << std::endl;
-	 /*p = head;
-	 while (p) {
-		 std::cout << "x=" << p->x << std::endl;
-		 std::cout << "y=" << p->y << std::endl;
-		 std::cout << "F=" << p->func << std::endl;
-		 std::cout << std::endl << std::endl;
-		 p = p->next;
-	 }*/
+	// auto it = std::max_element(maximum.begin(), maximum.end());
+	 std::cout << std::endl <<"Max = " << maxik << std::endl;
+	
 	 Gen* node = nullptr;
 	 while (head) {
 		 node = head->next;
