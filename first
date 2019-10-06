@@ -1,0 +1,67 @@
+﻿#include <iostream>
+#include <sstream>
+#include <cstring>
+#include <vector>
+
+#include <math.h>
+
+
+
+
+int main () {
+	bool vector_minus = false;
+	bool minus = false;
+	std::vector<int> vminus;
+	std::vector<int> vplus;
+	std::vector<int> summa;
+
+	std::string help_plus;
+	std::string help_minus;
+
+	std::string main_string;
+	long long minuss = 0;
+	long long plus = 0;
+	long long summ = 0;
+
+	while (std::getline(std::cin, main_string)) {
+		//std::getline(std::cin, main_string);
+		for (auto i = 0; i < main_string.length() + 1; ++i) {
+			if (minus) {
+				if (std::isdigit(main_string[i])) {
+					help_minus.push_back(main_string[i]);
+					continue;
+				}
+				else
+					minus = false;
+
+			}
+
+			else if (std::isdigit(main_string[i])) {
+				help_plus.push_back(main_string[i]);
+
+				continue;
+			}
+
+			if (help_plus.size() > 0) {
+				plus += atoi(help_plus.c_str());
+				help_plus.clear();
+			}
+			if (help_minus.size() > 0) {
+				minuss -= atoi(help_minus.c_str());
+				help_minus.clear();
+			}
+
+			if (main_string[i] == '-') {
+				minus = true;
+				if (std::isdigit(main_string[i + 1])) {
+					help_minus.push_back(main_string[i + 1]);
+					++i;
+				}
+				continue;
+			}
+		}
+	}
+
+	summ = plus + minuss;
+	std::cout << summ;
+}
