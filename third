@@ -1,0 +1,214 @@
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <utility>
+#include <fstream>
+
+class queque {
+private:
+	std::string* queque_t;
+	int tail = 0;
+	int head = 0;
+
+	int size_t = 0;
+	int count = 0;
+	bool flag = true;
+
+public:
+	queque() {
+		queque_t = nullptr;
+	};
+
+	void set_size(int number, std::ofstream& file_out) {
+		if (flag) {
+			if (number > 0) {
+				size_t = number;
+				flag = false;
+				queque_t = new std::string[number];
+				for (int i = 0; i < size_t; ++i) {
+					queque_t[i] = " ";
+				}
+			}
+		}
+		else file_out << "error" << std::endl;
+	}
+	void restart() {
+		int k = 0;
+		for (int i = 1; i < size_t; ++i) {
+			if (queque_t[i] != " ") {
+				std::swap(queque_t[k], queque_t[i]);
+				++k;
+			}
+		}
+	}
+	void push(std::string string, std::ofstream& file_out) {
+		if (!flag) {
+			if (count == 0) {
+				queque_t[0] = string;
+				head = count;
+				tail = count + 1;
+				++count;
+				return;
+			}
+			if (count < size_t) {
+				if (head == 0) {
+					queque_t[tail] = string;
+					++tail;
+					++count;
+				}
+				else if (head > 0 && tail < size_t) {
+					queque_t[tail] = string;
+
+					++tail;
+					++count;
+				}
+				else if (head > 0 && tail == size_t) {
+					tail = tail - head;
+					head = 0;
+					restart();
+					queque_t[tail] = string;
+					++tail;
+					++count;
+				}
+			}
+			else if (count == size_t) {
+				file_out << "overflow" << std::endl;
+				return;
+			}
+		}
+		else file_out << "error" << std::endl;
+	}
+
+	void pop(std::ofstream& file_out) {
+		if (!flag) {
+			if (count == 0) {
+				file_out << "underflow" << std::endl;
+				return;
+			}
+
+			file_out << queque_t[head] << std::endl;
+			queque_t[head] = " ";
+
+			++head;
+			--count;
+		}
+		else file_out << "error" << std::endl;
+	}
+	void print(std::ofstream& file_out) {
+		if (count == 0 && size_t > 0) {
+			file_out << "empty" << std::endl;
+			return;
+		}
+		else if (size_t == 0) {
+			file_out << "error" << std::endl;
+			return;
+		}
+		int k = 0;
+		for (int i = 0; i < size_t; ++i) {
+			if (queque_t[i] != " ") {
+				file_out << queque_t[i];
+				++k;
+				if (i != size_t - 1 && k < count) file_out << " ";
+			}
+
+		}
+		file_out << std::endl;
+
+	}
+	~queque() {
+		if(queque_t != nullptr)
+		delete[] queque_t;
+	}
+};
+
+
+
+int main(int argc, char* argv[])
+{
+	
+	std::string path_1 = argv[1];
+	std::string path_2 = argv[2];
+	std::ifstream file_in(path_1);
+	std::ofstream file_out(path_2);
+
+	queque A;
+	char op1, op2;
+	std::string main_string;
+	std::string check;
+	bool flags = false;
+	while (std::getline(file_in, main_string)) {
+		flags = false;
+		std::istringstream stream(main_string);
+		while (stream >> op1) {
+			check.push_back(op1);
+			if (check == "set_size") {
+				flags = true;
+				std::string help;
+				main_string.erase(0, 9);
+				bool flag = true;
+				for (int i = 0; i < main_string.size(); ++i) {
+					if (main_string[i] == ' ' || !std::isdigit(main_string[i])) {
+						flag = false;
+						break;
+					}
+				}
+				if (main_string.size() > 0 && flag) {
+					int a = atoi(main_string.c_str());
+					A.set_size(a, file_out);
+					continue;
+				}
+				else file_out << "error" << std::endl;
+
+
+			}
+			else if (check == "push") {
+				flags = true;
+				main_string.erase(0, 5);
+				bool flag = true;
+				for (int i = 0; i < main_string.size(); ++i) {
+					if (main_string[i] == ' ') {
+						flag = false;
+						break;
+					}
+				}
+
+				if (main_string.size() > 0 && flag) {
+
+					A.push(main_string, file_out);
+					continue;
+				}
+				else file_out << "error" << std::endl;
+			}
+			else if (check == "pop") {
+				flags = true;
+				main_string.erase(0, 3);
+
+				if (main_string.size() == 0) {
+
+					A.pop(file_out);
+					continue;
+				}
+				else file_out << "error" << std::endl;
+			}
+			else if (check == "print") {
+				flags = true;
+				main_string.erase(0, 5);
+
+				if (main_string.size() == 0) {
+
+					A.print(file_out);
+					continue;
+				}
+				else file_out << "error" << std::endl;
+			}
+
+		}
+		if (!flags && main_string.size() > 0) file_out << "error" << std::endl;
+		check.clear();
+
+		
+	}
+
+
+}
