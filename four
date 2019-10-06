@@ -1,0 +1,92 @@
+#include <iostream>
+#include <stack>
+#include <queue>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <sstream>
+#include <algorithm>
+void search_high(std::unordered_map<std::string, std::vector<std::string>> vertexs, std::string start_v) {
+	std::unordered_set<std::string> color_v;
+	std::stack<std::string> node;
+	std::string current_v;
+	node.push(start_v);
+	while (!node.empty()) {
+		current_v = node.top();
+		node.pop();
+		if (color_v.end() != color_v.find(current_v)) continue;
+		std::cout << current_v << std::endl;
+		color_v.insert(current_v);
+		std::sort(vertexs[current_v].begin(), vertexs[current_v].end());
+		for (int i = vertexs[current_v].size() - 1; i >= 0; --i) {
+			if (color_v.end() != color_v.find(vertexs[current_v][i])) continue;
+			node.push(vertexs[current_v][i]);
+		}
+	}
+}
+void search_width(std::unordered_map<std::string, std::vector<std::string>> vertexs, std::string start_v) {
+	std::unordered_set<std::string> color_v;
+	std::queue<std::string> node;
+	std::string current_v;
+	node.push(start_v);
+	while (!node.empty()) {
+		current_v = node.front();
+		node.pop();
+		if (color_v.end() != color_v.find(current_v)) continue;
+		std::cout << current_v << std::endl;
+		color_v.insert(current_v);
+		std::sort(vertexs[current_v].begin(), vertexs[current_v].end());
+		for (int i = 0; i < vertexs[current_v].size(); ++i) {
+			if (color_v.end() != color_v.find(vertexs[current_v][i])) continue;
+			node.push(vertexs[current_v][i]);
+		}
+	}
+}
+int main()
+{
+	
+	std::unordered_map<std::string,std::vector<std::string>> vertexs;
+	std::string string,vertex1,vertex2;
+	char op;
+	bool graph_type = true;
+	bool search_type = true;
+	bool flag = true;
+	std::string current_v;
+
+	std::getline(std::cin, string);
+	std::istringstream stream(string);
+	stream >> op;
+
+	if (op == 'd') {// ориентированный graph_type = false;
+		graph_type = false;
+	} 
+
+	else if (op == 'u') { // неориентированный graph_type = false;
+		graph_type = true;
+	}
+	stream >> current_v;
+
+	stream >> op;
+	if (op == 'b') { //обход в ширину b true
+		search_type = true;
+	}
+	else if (op == 'd') { // обход в глубину d
+		search_type = false;
+	}
+
+	while (std::getline(std::cin, string)) {
+		std::istringstream stream(string);
+		while (stream >> vertex1 >> vertex2) {
+			vertexs[vertex1].push_back(vertex2);
+			if (graph_type) vertexs[vertex2].push_back(vertex1);
+		}
+	}
+	
+	if (search_type) {
+		search_width(vertexs, current_v);
+	}
+	else {
+		search_high(vertexs, current_v);
+	}
+
+}
