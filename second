@@ -1,0 +1,163 @@
+// ConsoleApplication3.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <utility>
+class stack {
+private:
+	std::string* stack_t;
+
+	int size_t = 0;
+	int count = 0;
+	bool flag = true;
+
+public:
+	stack() {
+		stack_t = nullptr;
+	}
+	void set_size(int number) {
+		if (flag) {
+			if (number > 0) {
+				size_t = number;
+				flag = false;
+				stack_t = new std::string[number];
+				for (int i = 0; i < size_t; ++i) {
+					stack_t[i] = " ";
+				}
+			}
+		}
+		else std::cout << "error" << std::endl;//result_t.push_back("error\n");
+	}
+	void push(std::string string) {
+		if (!flag) {
+
+			if (count < size_t) {
+				stack_t[count] = string;
+				++count;
+				return;
+			}
+			else if (count == size_t) {
+				std::cout << "overflow" << std::endl;//result_t.push_back("overflow\n");
+				return;
+			}
+		}
+		else std::cout << "error" << std::endl;//result_t.push_back("error\n");
+	}
+		
+	void pop() {
+		if (!flag) {
+			if (count == 0) {
+				std::cout << "underflow" << std::endl;//result_t.push_back("underflow\n");
+				return;
+			}
+			std::cout << stack_t[count - 1] << std::endl;
+			--count;
+			stack_t[count] = " ";
+		}
+		else std::cout << "error" << std::endl;//result_t.push_back("error\n"); 
+	}
+	void print() {
+		if (count == 0 && size_t > 0) {
+			std::cout << "empty" << std::endl;//result_t.push_back("empty\n");
+			return;
+		}
+		else if (size_t == 0) {
+			std::cout << "error" << std::endl;//result_t.push_back("error\n");
+			return;
+		}
+		for (int i = 0; i < count; ++i) {
+			std::cout << stack_t[i];//result_t.push_back(stack_t[i]);
+			if(i != count - 1) std::cout << " " ;
+		}
+		std::cout << std::endl;
+		
+	}
+	~stack() {
+		if(stack_t != nullptr)
+		delete[] stack_t;
+	}
+};
+
+
+
+int main()
+{
+
+	stack A;
+	char op1, op2;
+	std::string main_string;
+	std::string check;
+	bool flags = false;
+	while (std::getline(std::cin, main_string)) {
+		std::istringstream stream(main_string);
+		while (stream >> op1) {
+			check.push_back(op1);
+			if (check == "set_size") {
+				flags = true;
+				std::string help;
+				main_string.erase(0, 9);
+				bool flag = true;
+				for (int i = 0; i < main_string.size(); ++i) {
+					if (main_string[i] == ' ' || !std::isdigit(main_string[i])) {
+						flag = false;
+						break;
+					}
+				}
+				if (main_string.size() > 0 && flag) {
+					int a = atoi(main_string.c_str());
+					A.set_size(a);
+					
+				}
+				else std::cout << "error" << std::endl;
+				
+
+			}
+			else if (check == "push") {
+				flags = true;
+				main_string.erase(0, 5);
+				bool flag = true;
+				for (int i = 0; i < main_string.size(); ++i) {
+					if (main_string[i] == ' ') { 
+						flag = false; 
+						break;
+					}
+				}
+
+				if (main_string.size() > 0 && flag) {
+
+					A.push(main_string);
+				}
+				else std::cout << "error" << std::endl;
+			}
+			else if (check == "pop") {
+				flags = true;
+				main_string.erase(0, 3);
+				
+				if (main_string.size() == 0) {
+
+					A.pop();
+				}
+				else std::cout << "error" << std::endl;
+			}
+			else if (check == "print") {
+				flags = true;
+				main_string.erase(0, 5);
+			
+				if (main_string.size() == 0) {
+
+					A.print();
+				}
+				else std::cout << "error" << std::endl;
+			}
+			
+		}
+		if (!flags && main_string.size() != 0) std::cout << "error" << std::endl;
+			check.clear();
+
+
+		}
+
+	
+	}
