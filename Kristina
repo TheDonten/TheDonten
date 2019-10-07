@@ -1,0 +1,76 @@
+// Kristina_first.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+#include <string>
+
+int main()
+{
+	//std::string string = "100dasda20(sada-da-100";
+	std::string line;
+	std::string minus_s;
+	std::string plus_s;
+	long long summa = 0;
+	bool minus = false;
+	while (std::getline(std::cin, line))
+
+	{
+		for(auto i = 0  ; i < line.size()+1; ++i)
+		{
+			if (minus) {
+				if (std::isdigit(line[i]))
+				{
+					minus_s.push_back(line[i]);
+					continue;
+				}
+				else { 
+					minus = false; 
+				   
+				}
+			}
+			else if (std::isdigit(line[i]))
+			{
+				plus_s.push_back(line[i]);
+				continue;
+
+			}
+			if ((line[i] == '-') && (std::isdigit(line[i + 1])))
+			{
+				minus_s.push_back(line[i + 1]);
+				minus = true;
+				++i;
+				continue;
+			}
+
+			if (plus_s.size() > 0)
+			{   long int a = std::atoi(plus_s.c_str());
+			    summa += a;
+				plus_s.clear();
+			}
+			if (minus_s.size() > 0)
+			{
+				long int a = std::atoi(minus_s.c_str());
+				summa -= a;
+				minus_s.clear();
+			}
+
+
+
+		}
+
+
+	}
+
+	std::cout << summa;
+}
+
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
+//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
+//   2. В окне Team Explorer можно подключиться к системе управления версиями.
+//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
+//   4. В окне "Список ошибок" можно просматривать ошибки.
+//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
+//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
