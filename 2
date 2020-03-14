@@ -1,0 +1,891 @@
+// Method2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <unordered_set>
+#include <algorithm>
+
+
+static std::string func = "0011111100110000110011001100110011110000100010101111111110001000";
+static int size_vecs;
+static std::unordered_set<std::string> S2;
+static std::unordered_set<std::string> S3;
+
+static int count = 0;
+
+void print(std::string str, std::vector<std::vector<std::pair<std::string, std::string>>> & start) {
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (std::get<1>(start[i][j]) != "")
+					std::cout << std::get<1>(start[i][j]) << "  ";
+			}
+			std::cout << "= " << str[i];
+			std::cout << std::endl;
+		}
+	}
+}
+
+std::vector<int> how_much_del(std::string str) {
+	int a = str.size();
+	std::vector<int> vec;
+	while (a != 1) {
+
+		a /= 2;
+		vec.push_back(a);
+
+	}
+	return vec;
+}
+
+
+
+
+std::vector<std::vector<std::pair<std::string, std::string>>> iniz(int size_str, int size_vec) {
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start.resize(size_str);
+	for (int i = 0; i < start.size(); ++i) {
+		start[i].resize(size_vec);
+
+	}
+	return start;
+}
+
+
+
+std::vector<std::vector<std::pair<std::string, std::string>>> start_func(int size_vec, int size_str, std::vector<int> num, std::vector<std::vector<std::pair<std::string, std::string>>> start) {
+	bool flag = true;
+	int k = 0, z = 0;
+	for (int i = 0; i < size_vec; ++i) {
+		flag = true;
+		k = 0;
+		z = 0;
+		for (int j = 0; j < size_str; ++j) {
+			
+			if (flag) {
+				std::get<0>(start[j][i]) = "0|X" + std::to_string(i + 1);
+				//S2.insert(std::get<0>(start[j][i]));
+				std::get<1>(start[j][i]) = "0";
+				
+				++k;
+			}
+			else {
+				std::get<0>(start[j][i]) = "1|X" + std::to_string(i + 1);
+			//	S2.insert(std::get<0>(start[j][i]));
+				std::get<1>(start[j][i]) = "1";
+			
+				++z;
+			}
+			if (k % num[i] == 0 && k != 0) {
+				flag = false;
+				k = 0;
+			}
+			if (z % num[i] == 0 && z != 0) {
+				flag = true;
+				z = 0;
+			}
+		}
+	}
+	print(func, start);
+
+	for (int i = 0; i < start.size(); ++i) {
+		
+		if (func[i] == '0') {
+			start[i].clear();
+		}
+		else count += 1;
+	}
+	std::cout << std::endl;
+	print(func, start);
+
+	return start;
+}
+
+std::vector<std::pair<std::string, std::string>> check(std::vector<std::pair<std::string, std::string>> vec1, std::vector<std::pair<std::string, std::string>> vec2, int m) {
+	int k = 0;
+	int l = 0;
+	std::string str;
+	std::vector<std::pair<std::string, std::string>> out;
+	for (int n = 0; n < vec1.size(); ++n) {
+		for (int i = 0; i < vec2.size(); ++i) {
+			for (int j = 0; j < vec1[n].first.size(); ++j) {
+				if (vec1[n].first[j] != vec2[i].first[j]) {
+					if(l == 0) k = j;
+					++l;
+				}
+				
+			}
+			if (l <= m && l > 0) {
+				str = vec1[n].first;
+				str[k] = 'X';
+				if (S2.find(str) == S2.end()) {
+					S2.insert(str);
+					out.push_back({ str, "" });
+				}
+				str.clear();
+			}
+			l = 0;
+			k = 0;
+			//return "";
+		}
+	}
+	return out;
+}
+void parse_func(std::vector<std::vector<std::pair<std::string, std::string>>> & start) {
+	
+	std::vector<std::vector<std::pair<std::string, std::string>>> vec1,vec2,vec3, checks;
+	vec1.resize(size_vecs + 1);
+	std::string str;
+	int k = 0;
+	
+		for (int i = 0; i < start.size(); ++i) {
+			if (!start[i].empty()) {
+				for (int j = 0; j < start[i].size(); ++j) {
+					str += std::get<1>(start[i][j]);
+					if (std::get<1>(start[i][j]) == "1") {
+						++k;
+					}
+				}
+			
+				vec1[k].push_back({ str,"" });
+					k = 0;
+					str.clear();
+			
+			}
+		}
+
+	
+
+	for (int i = 0; i < vec1.size(); ++i) {
+		std::cout << i << std::endl;
+		for (int j = 0; j < vec1[i].size(); ++j) {
+			std::cout << vec1[i][j].first << std::endl;
+		}
+		std::cout << "-----------" <<std::endl;
+	}
+	k = 0;
+	int l = 0;
+	bool flag = true;
+	
+	vec3 = vec1;
+	while (flag) {
+		
+		if (!vec2.empty()) {
+			
+			vec3 = vec2;
+		}
+		 vec2.clear();
+		for (int i = 0; i < vec3.size(); ++i) {
+			for (int j = 0; j < vec3.size(); ++j) {
+				if (vec3[i].empty()) break;
+				if (vec3[i] == vec1[j]) continue;
+				checks.push_back(check(vec3[i], vec3[j], 1));
+				l++;
+				if (!checks[l - 1].empty())
+					vec2.push_back(checks[l - 1]);
+		
+			}
+		}
+		if (vec2.empty()) break;
+		checks.clear();
+		l = 0;
+	}
+		
+	std::cout << "-----------" << std::endl;
+	for (auto& x : S2) {
+		std::cout << x << std::endl;
+		std::cout << "-----------" << std::endl;
+   }
+
+ }
+
+void parse_func2() {
+	std::vector<std::string> vec1,vec_out;
+	for (auto& x : S2) {
+		vec1.push_back(x);
+	}
+	int m = 0,l = 0, s = 0;
+	bool flag = true;
+	for (int i = vec1.size() - 1; i >= 0; --i) {
+		if (!vec1[i].empty()) {
+			for (int j = vec1.size() - 2; j >= 0; --j) {
+				if (!vec1[j].empty()) {
+					if (vec1[i] != vec1[j]) {
+						if (!vec1[i].empty())flag = true;
+						for (int k = 0; k < vec1[i].size(); ++k) {
+							if (vec1[i][k] != vec1[j][k]) {
+								++m;
+
+							}
+							if (m == 2) {
+								flag = false;
+								break;
+
+							}
+						}
+						m = 0;
+						if (flag) {
+
+							S3.insert(vec1[i]);
+							vec1[j].clear();
+
+						}
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < vec1.size(); ++i) {
+		S3.insert(vec1[i]);
+	}
+	std::cout << "-----------" << std::endl;
+	for (auto& x : S3) {
+		std::cout << x << std::endl;
+	}
+	std::cout << "-----------" << std::endl;
+}
+bool check_str(std::string str1, std::string str2) {
+	bool flag = true;
+	int l = 0;
+	for (int i = 0; i < str1.size(); ++i) {
+		if (str1[i] == 'X' || str2[i] == 'X')continue;
+		else if ((str1[i] == str2[i])) continue;
+		else {
+			++l;
+		}
+	}
+	if (l < 1) {
+		return true;
+	}
+	else return false;
+}
+void mark_matrix(std::vector<std::vector<std::string>> &vec) {
+	int l = 0;
+	for (int i = 1; i < vec.size(); ++i) {
+		for (int j = 1; j < vec[i].size(); ++j) {
+			if (vec[i][0] != "" && vec[0][j] != "") {
+				if (check_str(vec[i][0], vec[0][j])) {
+					vec[i][j] = "|X|";
+				}
+			}
+		}
+	}
+}
+
+
+void  vec_clear(std::vector<std::vector<std::string>>& vec){
+	for (auto i = 1; i < S3.size() + 2; ++i) {
+
+		if (!vec[i].empty())
+		{
+			if (S2.find(vec[i][0]) != S2.end()) {
+				if (vec[i][0] != "") {
+					vec[i][0] = "";
+					for (int j = 0; j < count + 2; ++j) {
+						if (vec[i][j] == "|X|") {
+							vec[0][j] = "";
+
+							for (int l = 1; l < S3.size() + 2; ++l) {
+								if (!vec[l].empty())
+									vec[l][j] = "";
+							}
+						}
+					}
+					//vec[i].clear();
+				}
+			}
+
+		}
+
+	}
+}
+
+void print2(std::vector<std::vector<std::string>>& vec) {
+	bool flag = false;
+	for (int i = 1; i < count + 2; ++i) {
+		if (vec[0][i] != "") {
+			flag = true;
+			break;
+		}
+	}
+	if (!flag) return;
+
+	for (int i = 0; i < S3.size() + 1; ++i) {
+		if (i == 0) {
+			std::cout << "       ";
+		}
+		
+		if (!vec[i].empty()) {
+			for (int j = 0; j < count + 2; ++j) {
+				if (i == 0) {
+					if (vec[i][j] != "")
+						std::cout << vec[i][j] << "     ";
+					continue;
+				}
+				else if (j == 0) {
+
+					if (vec[i][j] != "")
+						std::cout << vec[i][j] << "   ";
+					else break;
+
+				}
+
+				if (vec[0][j] == "") continue;
+				else {
+					if (vec[i][j] == "") {
+						std::cout  <<"|0|"<< "        ";
+					}
+					else {
+						std::cout << vec[i][j] << "        ";
+					}
+				}
+
+			}
+			std::cout << std::endl << std::endl;
+		}
+	}
+}
+int how_much_lit(std::string s) {
+	int k = 0;
+	for (int i = 0; i < s.size(); ++i) {
+		if (s[i] == '|') ++k;
+	}
+	return k;
+}
+bool check_str2(std::pair<std::string,std::string> t) {
+	int k = 0;
+	int l = 0;
+	k = how_much_lit(t.first);
+	l = how_much_lit(t.second);
+	k /= 2;
+	l /= 2;
+
+	/*std::cout << k << " ";
+	std::wcout << l << " ";
+	std::cout << std::endl;*/
+	int s = 0;
+	std::string help1, help2;
+
+	for (int j = 0; j < t.first.size(); ++j) {
+		help1 = "";
+		if (t.first[j] != '|') {
+			help1 = t.first[j];
+			for (int m = j + 1; m < t.first.size(); ++m) {
+				if (t.first[m] != '|') {
+					help1 += t.first[m];
+					++j;
+				}
+				else {
+					break;
+				}
+			}
+
+			for (int l = 0; l < t.second.size(); ++l) {
+				help2 = "";
+				if (t.second[l] != '|') {
+					help2 += t.second[l];
+					for (int m = l + 1; m < t.second.size(); ++m) {
+						if (t.second[m] != '|') {
+							help2 += t.second[m];
+							++l;
+						}
+						else {
+							break;
+						}
+					}
+
+					if (help1 == help2) {
+						++s;
+
+					}
+				}
+				
+				
+			}
+		}
+	}
+	if (k == l && l == s) {
+		return true;
+	}
+	else if (k < l) {
+		if (k == s) {
+			return true;
+		}
+		else  return false;
+	}
+	else if (k > l) {
+		if (l == s) {
+			return true;
+
+		}
+		else return false;
+	}
+	else return false;
+}
+
+std::string check_polinom(std::vector<std::string>& vec,int size) {
+	std::string str;
+	std::string help1,help2;
+	char op;
+	int k = 0;
+	for (int i = 0; i < vec.size(); ++i) {
+		
+			
+			
+			
+			for (int j = 0; j < vec[i].size(); ++j) {
+				help1 = "";
+				if (vec[i][j] != '|') {
+					help1 = vec[i][j];
+					for (int m = j + 1; m < vec[i].size(); ++m) {
+						if (vec[i][m] != '|') {
+							help1 += vec[i][m];
+							++j;
+						}
+						else {
+							break;
+						}
+					}
+
+					for (int l = j + 1; l < vec[i].size(); ++l) {
+						help2 = "";
+						if (vec[i][l] != '|') {
+							help2 += vec[i][l];
+							for (int m = l + 1; m < vec[i].size(); ++m) {
+								if (vec[i][m] != '|') {
+									help2 += vec[i][m];
+									++l;
+								}
+								else {
+									break;
+								}
+							}
+
+						}
+						if (help1 == help2) {
+							vec[i].erase(l - 1, help2.size() + 2);
+						}
+					}
+				}
+			}
+		
+	}
+
+	bool flag = true;
+
+	for (int i = 0; i < vec.size() - 1; ++i) {
+		if (vec[i] != "") {
+			for (int j = i + 1; j < vec.size(); ++j) {
+				//if (i == j) continue;
+				if (vec[j] != "" && vec[i] != "") {
+					if (vec[i] == vec[j] && i != j) {
+						vec[j] = "";
+						continue;
+					}
+					
+
+					flag = check_str2({ vec[i], vec[j] });
+					if (flag) {
+						if (vec[i].size() > vec[j].size()) {
+							vec[i] = "";
+						}
+						else vec[j] = "";
+					}
+				}
+			}
+		}
+	}
+	std::cout << std::endl;
+	str = "(";
+	if (size == 2) {
+		k = 0;
+		for (int i = 0; i < vec.size() - 1; ++i) {
+			if (vec[i].size() < vec[i + 1].size()) {
+				++k;
+			}
+		}
+		str += vec[k];
+	}
+	else {
+		k = 0;
+		for (auto& x : vec) {
+			if (x != "") {
+				if (k == 0) {
+					str += x;
+					++k;
+				}
+				else
+					str += "+" + x;
+			}
+		}
+	}
+
+	str += ")";
+	
+	return str;
+	std::cout << std::endl;
+}
+std::string mult(std::string str1, std::string str2,int size) {
+	std::string str,help1,help2;
+	std::string ctr;
+	int count_lit = 0;
+	int k = 0;
+	int l = 0;
+	std::vector<std::string> vec;
+	str = "*(";
+	if (str1.size() > str2.size()) {
+		for (int i = 0; i < str1.size(); ++i) {
+
+			if ((str1[i] != '*' && str1[i] != '(' && str1[i] != ')' && str1[i] != '+')) {
+				help1 = str1[i];
+				for (int m = i + 1; m < str1.size(); ++m) {
+					if (str1[m] != '*' && str1[m] != '(' && str1[m] != ')' && str1[m] != '+') {
+						help1 += str1[m];
+						++i;
+					}
+					else break;
+				}
+				for (int j = 0; j < str2.size(); ++j) {
+					if ((str2[j] != '*' && str2[j] != '(' && str2[j] != ')' && str2[j] != '+')) {
+						
+						help2 = str2[j];
+					
+						for (int n = j + 1; n < str2.size(); ++n) {
+							if (str2[n] != '*' && str2[n] != '(' && str2[n] != ')' && str2[n] != '+') {
+								help2 += str2[n];
+								++j;
+							}
+							else break;
+						}
+						if (k == 0) {
+							
+							if (help1 == help2) {
+								if (help1[0] == '|') {
+									ctr =  help1;
+								}
+								else {
+									ctr = "|" + help1 + "|";
+								}
+								str += ctr;
+								vec.push_back(ctr);
+								++count_lit;
+								++k;
+							}
+							else {
+								if (help1[0] == '|') {
+									ctr = "|" + help2 + "|" + help1 ;
+								}
+								else {
+									ctr = "|" + help1 + "|" + "|" + help2 + "|";
+								}
+								str += ctr;
+								vec.push_back(ctr);
+								++count_lit;
+								++k;
+							}
+						}
+						else {
+							if (help1 == help2) {
+								if (help1[0] == '|') {
+									ctr = help1;
+								}
+								else {
+									ctr = "|" + help1 + "|";
+								}
+								str += "+" + ctr;
+								vec.push_back(ctr);
+								++count_lit;
+							}
+							else {
+								if (help1[0] == '|') {
+									ctr = "|" + help2 + "|" + help1;
+								}
+								else {
+									ctr = "|" + help1 + "|" + "|" + help2 + "|";
+								}
+								str += "+" + ctr;
+								vec.push_back(ctr);
+								++count_lit;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	else {
+		for (int i = 0; i < str2.size(); ++i) {
+			if ((str2[i] != '*' && str2[i] != '(' && str2[i] != ')' && str2[i] != '+')) {
+				help2 = str2[i];
+				for (int n = i + 1; n < str2.size(); ++n) {
+					if (str2[n] != '*' && str2[n] != '(' && str2[n] != ')' && str2[n] != '+') {
+						help2 += str2[n];
+						++i;
+					}
+					else break;
+				}
+				for (int j = 0; j < str1.size(); ++j) {
+					if ((str1[j] != '*' && str1[j] != '(' && str1[j] != ')' && str1[j] != '+')) {
+						help1 = str1[j];
+						
+						for (int m = j + 1; m < str1.size(); ++m) {
+							if (str1[m] != '*' && str1[m] != '(' && str1[m] != ')' && str1[m] != '+') {
+								help1 += str1[m];
+								++j;
+							}
+							else break;
+						}
+					
+						if (k == 0) {
+							
+							if (help1 == help2) {
+								if (help2[0] == '|') {
+									ctr = help2;
+								}
+								str += ctr;
+								vec.push_back(ctr);
+								++count_lit;
+								++k;
+							}
+							else {
+								if (help2[0] == '|') {
+									ctr = "|" + help1 + "|" + help2;
+								}
+								else {
+									ctr = "|" + help1 + "|" + "|" + help2 + "|";
+								}
+								str += ctr;
+								vec.push_back(ctr);
+								++count_lit;
+								++k;
+							}
+						}
+						else {
+							if (help1 == help2) {
+								if (help2[0] == '|') {
+									ctr = help2;
+								}
+								else {
+									ctr = "|" + help2 + "|";
+								}
+								str += "+" + ctr;
+								vec.push_back(ctr);
+								++count_lit;
+							}
+							else {
+								if (help2[0] == '|') {
+									ctr = "|" + help1 + "|" + help2;
+								}
+								else {
+									ctr = "|" + help1 + "|" + "|" + help2 + "|";
+								}
+								str += "+" + ctr;
+								vec.push_back(ctr);
+								++count_lit;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	str += ")";
+	help1 = "";
+	help2 = "";
+	
+	bool flag1 = true, flag2 = true;;
+	k = 0;
+	l = 0;
+
+	
+	
+	
+	ctr =check_polinom(vec,size);
+	//std::cout << ctr << std::endl;
+
+	
+	return ctr;
+}
+void  method_petrick(std::vector<std::vector<std::string>>& vec) {
+	std::vector<std::pair<std::string, std::string>> vec1;
+	std::vector<std::string> vec2,vec3;
+	std::string str;
+	int k = 0;
+	int l = 0;
+	for (int i = 1; i < vec.size(); ++i) {
+		
+		vec1.push_back({ vec[i][0], std::to_string(i) });
+	}
+	
+	for (int i = 1; i < count + 2; ++i) {
+		k = 0;
+		if (vec[0][i] != "") {
+			if (l == 0) {
+				str = "(";
+				l = 1;
+			}
+			else {
+				str = "*(";
+			}
+			for (int j = 1; j < vec.size(); ++j) {
+				if (!vec[j].empty()) {
+					if (vec[j][i] == "|X|") {
+						if (k == 0) {
+							str += vec1[j - 1].second;
+							++k;
+						}
+						else str += "+" + vec1[j - 1].second;
+					}
+				}
+			}
+			if (str != "(" && str != "*(") {
+				str += ")";
+				vec2.push_back(str);
+				str = "";
+			}
+		}
+	}
+	
+	for (auto& x : vec2) {
+		std::cout << x;
+	}
+	for (auto& x : vec1) {
+		std::cout << x.first << " " << x.second <<std::endl;
+	}
+	for (int i = vec2.size() - 1; i >= 0; --i) {
+		if (vec2.size() == 1) break;
+		str = mult(vec2[i], vec2[i - 1], vec2.size());
+		vec2.pop_back();
+		vec2.pop_back();
+		vec2.push_back(str);
+	
+	}
+
+	
+	str = "";
+
+	for (int i = 0; i < vec2[0].size(); ++i) {
+		if (vec2[0][i] != '|' && vec2[0][i] != '(' && vec2[0][i] != ')' && vec2[0][i] != '+') {
+			str = vec2[0][i];
+			for (int j = i + 1; j < vec[0].size(); ++j) {
+				if (vec2[0][j] != '|' && vec2[0][j] != '(' && vec2[0][j] != ')' && vec2[0][j] != '+')
+				{
+					str += vec2[0][j];
+					++i;
+				}
+				else break;
+			}
+			S2.insert(vec1[std::stoi(str) - 1].first);
+		}
+	}
+	
+}
+void check_yadra(std::vector<std::vector<std::string>>& vec) {
+	S2.clear();
+	int k = 0;
+	int index = 0;
+	for (int i = 1; i < vec.size(); ++i) {
+		k = 0;
+		if (vec[0][i] != "") {
+			for (int j = 1; j < S3.size() + 2; ++j) {
+				if (vec[j][i] == "|X|") {
+					if (k == 0) index = j;
+					++k;
+				}
+
+			}
+			if (k == 1) {
+				S2.insert(vec[index][0]);   
+				k = 0;
+			}
+		}
+	}
+	std::cout  << std::endl;
+	
+	std::cout  << std::endl;
+	vec_clear(vec);
+
+	int l = 0;
+	k = 0;
+	index = 0;
+
+
+
+	print2(vec);
+
+	method_petrick(vec);
+
+	for (auto& x : S2) {
+		if (k == S2.size() - 1) {
+			std::cout << x << "   ";
+		}
+		else std::cout << x << " V ";
+		++k;
+	}
+
+}
+
+
+
+void check_index(std::vector<std::vector<std::pair<std::string, std::string>>>& start, int num) {
+	
+	std::vector<std::vector<std::string>> vec,vec1;
+	std::string str;
+	int k = 1;
+
+	vec.resize(S3.size() + 2);
+	for (int i = 0; i < S3.size() + 2; ++i) {
+		vec[i].resize(count + 2);
+	}
+	int i = 1;
+	for (auto& x : S3) {
+		vec[i][0] = x;
+		++i;
+	}
+
+	
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (func[i] != 0) {
+					str += start[i][j].second;
+				}
+			}
+
+
+		}
+		if (str != "") {
+			vec[0][k] = str;
+			++k;
+			str = "";
+		}
+	}
+	
+	mark_matrix(vec);
+
+	print2(vec);
+	std::cout << std::endl << std::endl;
+
+	check_yadra(vec);
+	std::cout << std::endl << std::endl;
+}
+int main(){
+
+	std::vector<int> num = how_much_del(func);
+	size_vecs = num.size();
+
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start = iniz(func.size(), num.size());
+	start = start_func(num.size(), func.size(), num, start);
+	parse_func(start);
+	parse_func2();
+	check_index(start, size_vecs);
+	
+
+}
+
