@@ -1,0 +1,241 @@
+// Method2_try_2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <unordered_set>
+#include <algorithm>
+
+
+static std::string func = "0011111100110000110011001100110011110000100010101111111110001000";
+static int size_vecs;
+static std::unordered_set<std::string> S2;
+static std::unordered_set<std::string> S3;
+
+static int count = 0;
+
+void print(std::string str, std::vector<std::vector<std::pair<std::string, std::string>>>& start) {
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (std::get<1>(start[i][j]) != "")
+					std::cout << std::get<1>(start[i][j]) << "  ";
+			}
+			std::cout << "= " << str[i];
+			std::cout << std::endl;
+		}
+	}
+}
+
+
+std::vector<int> how_much_del(std::string str) {
+	int a = str.size();
+	std::vector<int> vec;
+	while (a != 1) {
+
+		a /= 2;
+		vec.push_back(a);
+
+	}
+	return vec;
+}
+
+std::vector<std::vector<std::pair<std::string, std::string>>> iniz(int size_str, int size_vec) {
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start.resize(size_str);
+	for (int i = 0; i < start.size(); ++i) {
+		start[i].resize(size_vec);
+
+	}
+	return start;
+}
+
+void parse_func(std::vector<std::vector<std::pair<std::string, std::string>>>& start) {
+
+	std::vector<std::vector<std::pair<std::string, std::string>>> vec1, vec2, vec3, checks;
+	vec1.resize(size_vecs + 1);
+	std::string str;
+	int k = 0;
+
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				str += std::get<1>(start[i][j]);
+				if (std::get<1>(start[i][j]) == "1") {
+					++k;
+				}
+			}
+
+			vec1[k].push_back({ str,"" });
+			k = 0;
+			str.clear();
+
+		}
+	}
+
+
+
+}
+
+std::vector<std::string> check_term(std::vector< std::string> vec1, std::vector< std::string> vec2) {
+	std::string str;
+	int l = 0;
+	bool flag = true;
+	int index = 0;
+	std::vector<std::string> a;
+	//std::unordered_set<std::string> S;
+	for (int i = 0; i < vec1.size(); ++i) {
+		for (int j = 0; j < vec2.size(); ++j) {
+			for (int n = 0; n < vec1[i].size(); ++n) {
+				if (vec1[i][n] != vec2[j][n]) {
+			    if (vec1[i][n] == 'X' && (vec2[j][n] == '0' || vec2[j][n] == '1')) break;
+				else if (vec2[j][n] == 'X' && (vec1[i][n] == '0' || vec1[i][n]) == '1') break;
+				else {
+					if (flag) index = n;
+					++l;
+				}
+				}
+			}
+			if (l == 1) {
+				str = vec1[i];
+				str[index] = 'X';
+				
+				if (S2.find(str) == S2.end()) {
+					a.push_back(str);
+					S2.insert(str);
+				}
+			}
+			l = 0;
+			flag = true;
+		}
+	}
+	return a;
+}
+
+void term_weight(std::vector<std::vector<std::pair<std::string, std::string>>>& start, int num) {
+	std::vector < std::vector <std::string>> weight;
+	std::string str;
+	weight.resize(num + 1);
+	int l = 0;
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (std::get<1>(start[i][j]) == "1") ++l;
+				str += std::get<1>(start[i][j]);
+			}
+			weight[l].push_back(str);
+			l = 0;
+			str = "";
+		}
+	}
+	for (int i = 0; i < weight.size(); ++i) {
+		std::cout << i << "--------------" << std::endl;
+		for (int j = 0; j < weight[i].size(); ++j) {
+			std::cout << weight[i][j] << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	l = 0;
+	int index = 0;
+	bool flag = true;
+	std::vector < std::vector <std::string>> term;
+	std::vector < std::string> a;
+	do {
+
+		for (int i = 0; i < weight.size() - 1; ++i) {
+			if (!weight[i].empty()) {
+				for (int j = i + 1; j < weight.size(); ++j) {
+					a = check_term(weight[i], weight[j]);
+					if (!a.empty()) {
+						term.push_back(a);
+					}
+				}
+			}
+		}
+		
+		if (term.empty()) break;
+		
+		weight = term;
+		term.clear();
+	} while (!weight.empty());
+
+		for (int i = 0; i < weight.size(); ++i) {
+			for (int j = 0; j < weight[i].size(); ++j) {
+				std::cout << weight[i][j] << std::endl;
+			}
+		}
+}
+
+std::vector<std::vector<std::pair<std::string, std::string>>> start_func(int size_vec, int size_str, std::vector<int> num, std::vector<std::vector<std::pair<std::string, std::string>>> start) {
+	bool flag = true;
+	int k = 0, z = 0;
+	for (int i = 0; i < size_vec; ++i) {
+		flag = true;
+		k = 0;
+		z = 0;
+		for (int j = 0; j < size_str; ++j) {
+
+			if (flag) {
+				std::get<0>(start[j][i]) = "0|X" + std::to_string(i + 1);
+				//S2.insert(std::get<0>(start[j][i]));
+				std::get<1>(start[j][i]) = "0";
+
+				++k;
+			}
+			else {
+				std::get<0>(start[j][i]) = "1|X" + std::to_string(i + 1);
+				//	S2.insert(std::get<0>(start[j][i]));
+				std::get<1>(start[j][i]) = "1";
+
+				++z;
+			}
+			if (k % num[i] == 0 && k != 0) {
+				flag = false;
+				k = 0;
+			}
+			if (z % num[i] == 0 && z != 0) {
+				flag = true;
+				z = 0;
+			}
+		}
+	}
+	print(func, start);
+	std::cout << std::endl;
+	std::cout << "Delete null coefficient";
+	std::cout << std::endl;
+	for (int i = 0; i < start.size(); ++i) {
+
+		if (func[i] == '0') {
+			start[i].clear();
+		}
+		else count += 1;
+	}
+	std::cout << std::endl;
+	print(func, start);
+	term_weight(start, size_vec);
+	return start;
+}
+
+int main()
+{
+	std::vector<int> num = how_much_del(func);
+	size_vecs = num.size();
+
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start = iniz(func.size(), num.size());
+	start = start_func(num.size(), func.size(), num, start);
+	parse_func(start);
+}
+
+// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
+// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
+
+// Советы по началу работы 
+//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
+//   2. В окне Team Explorer можно подключиться к системе управления версиями.
+//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
+//   4. В окне "Список ошибок" можно просматривать ошибки.
+//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
+//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
