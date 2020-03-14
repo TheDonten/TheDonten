@@ -1,0 +1,618 @@
+// Method2.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
+//
+
+#include <iostream>
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <map>
+#include <unordered_set>
+#include <algorithm>
+
+
+static std::string func = "0011111100110000110011001100110011110000100010101111111110001000";
+static int size_vecs;
+static std::unordered_set<std::string> S2;
+static std::unordered_set<std::string> S3;
+static std::vector<std::vector<std::tuple<std::string, std::string, int, int>>> starts;
+static int count = 0;
+static std::vector<std::vector<std::string>> pomogi;
+void print(std::string str, std::vector<std::vector<std::pair<std::string, std::string>>>& start) {
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (std::get<1>(start[i][j]) != "")
+					std::cout << std::get<1>(start[i][j]) << "  ";
+			}
+			std::cout << "= " << str[i];
+			std::cout << std::endl;
+		}
+	}
+}
+
+std::vector<int> how_much_del(std::string str) {
+	int a = str.size();
+	std::vector<int> vec;
+	while (a != 1) {
+
+		a /= 2;
+		vec.push_back(a);
+
+	}
+	return vec;
+}
+
+
+
+
+std::vector<std::vector<std::pair<std::string, std::string>>> iniz(int size_str, int size_vec) {
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start.resize(size_str);
+	for (int i = 0; i < start.size(); ++i) {
+		start[i].resize(size_vec);
+
+	}
+	return start;
+}
+
+
+
+std::vector<std::vector<std::pair<std::string, std::string>>> start_func(int size_vec, int size_str, std::vector<int> num, std::vector<std::vector<std::pair<std::string, std::string>>> start,bool flags) {
+	if (flags) {
+		bool flag = true;
+		int k = 0, z = 0;
+		for (int i = 0; i < size_vec; ++i) {
+			flag = true;
+			k = 0;
+			z = 0;
+			for (int j = 0; j < size_str; ++j) {
+
+				if (flag) {
+					std::get<0>(start[j][i]) = "0|X" + std::to_string(i + 1);
+					
+					std::get<1>(start[j][i]) = "0";
+
+					++k;
+				}
+				else {
+					std::get<0>(start[j][i]) = "1|X" + std::to_string(i + 1);
+					//	S2.insert(std::get<0>(start[j][i]));
+					std::get<1>(start[j][i]) = "1";
+
+					++z;
+				}
+				if (k % num[i] == 0 && k != 0) {
+					flag = false;
+					k = 0;
+				}
+				if (z % num[i] == 0 && z != 0) {
+					flag = true;
+					z = 0;
+				}
+			}
+		}
+		print(func, start);
+
+		for (int i = 0; i < start.size(); ++i) {
+
+			if (func[i] == '0') {
+				start[i].clear();
+			}
+			else count += 1;
+		}
+
+
+
+		std::cout << std::endl;
+		print(func, start);
+
+		return start;
+	}
+}
+
+std::vector<std::pair<std::string, std::string>> check(std::vector<std::pair<std::string, std::string>> vec1, std::vector<std::pair<std::string, std::string>> vec2, int m) {
+	int k = 0;
+	int l = 0;
+	std::string str;
+	std::vector<std::pair<std::string, std::string>> out;
+	for (int n = 0; n < vec1.size(); ++n) {
+		for (int i = 0; i < vec2.size(); ++i) {
+			for (int j = 0; j < vec1[n].first.size(); ++j) {
+				if (vec1[n].first[j] != vec2[i].first[j]) {
+					if (l == 0) k = j;
+					++l;
+				}
+			}
+			if (l <= m && l > 0) {
+				str = vec1[n].first;
+				str[k] = 'X';
+				if (S2.find(str) == S2.end()) {
+					S2.insert(str);
+					out.push_back({ str, "" });
+				}
+				str.clear();
+			}
+			l = 0;
+			k = 0;
+			//return "";
+		}
+	}
+	return out;
+}
+void parse_func(std::vector<std::vector<std::pair<std::string, std::string>>>& start) {
+
+	std::vector<std::vector<std::pair<std::string, std::string>>> vec1, vec2, vec3, checks;
+	vec1.resize(size_vecs + 1);
+	std::string str;
+	int k = 0;
+
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				str += std::get<1>(start[i][j]);
+				if (std::get<1>(start[i][j]) == "1") {
+					++k;
+				}
+			}
+
+			vec1[k].push_back({ str,"" });
+			k = 0;
+			str.clear();
+
+		}
+	}
+
+
+
+	for (int i = 0; i < vec1.size(); ++i) {
+		std::cout << i << std::endl;
+		for (int j = 0; j < vec1[i].size(); ++j) {
+			std::cout << vec1[i][j].first << std::endl;
+		}
+		std::cout << "-----------" << std::endl;
+	}
+	k = 0;
+	int l = 0;
+	bool flag = true;
+
+	vec3 = vec1;
+	while (flag) {
+
+		if (!vec2.empty()) {
+
+			vec3 = vec2;
+		}
+		vec2.clear();
+		for (int i = 0; i < vec3.size(); ++i) {
+			for (int j = 0; j < vec3.size(); ++j) {
+				if (vec3[i].empty()) break;
+				if (vec3[i] == vec1[j]) continue;
+				checks.push_back(check(vec3[i], vec3[j], 1));
+				l++;
+				if (!checks[l - 1].empty())
+					vec2.push_back(checks[l - 1]);
+
+			}
+		}
+		if (vec2.empty()) break;
+		checks.clear();
+		l = 0;
+	}
+
+	std::cout << "-----------" << std::endl;
+	for (auto& x : S2) {
+		std::cout << x << std::endl;
+		std::cout << "-----------" << std::endl;
+	}
+
+}
+
+void parse_func2() {
+	std::vector<std::string> vec1, vec_out;
+	for (auto& x : S2) {
+		vec1.push_back(x);
+	}
+	int m = 0, l = 0, s = 0;
+	bool flag = true;
+	for (int i = vec1.size() - 1; i >= 0; --i) {
+		if (!vec1[i].empty()) {
+			for (int j = vec1.size() - 2; j >= 0; --j) {
+				if (!vec1[j].empty()) {
+					if (vec1[i] != vec1[j]) {
+						if (!vec1[i].empty())flag = true;
+						for (int k = 0; k < vec1[i].size(); ++k) {
+							if (vec1[i][k] != vec1[j][k]) {
+								++m;
+
+							}
+							if (m == 2) {
+								flag = false;
+								break;
+
+							}
+						}
+						m = 0;
+						if (flag) {
+
+							S3.insert(vec1[i]);
+							vec1[j].clear();
+
+						}
+					}
+				}
+			}
+		}
+	}
+	for (int i = 0; i < vec1.size(); ++i) {
+		S3.insert(vec1[i]);
+	}
+	std::cout << "-----------" << std::endl;
+	for (auto& x : S3) {
+		std::cout << x << std::endl;
+	}
+	std::cout << "-----------" << std::endl;
+}
+bool check_str(std::string str1, std::string str2) {
+	bool flag = true;
+	int l = 0;
+	for (int i = 0; i < str1.size(); ++i) {
+		if (str1[i] == 'X' || str2[i] == 'X')continue;
+		else if ((str1[i] == str2[i])) continue;
+		else {
+			++l;
+		}
+	}
+	if (l < 1) {
+		return true;
+	}
+	else return false;
+}
+void mark_matrix(std::vector<std::vector<std::string>>& vec) {
+	int l = 0;
+	for (int i = 1; i < vec.size(); ++i) {
+		for (int j = 1; j < vec[i].size(); ++j) {
+			if (vec[i][0] != "" && vec[0][j] != "") {
+				if (check_str(vec[i][0], vec[0][j])) {
+					vec[i][j] = "|X|";
+				}
+			}
+		}
+	}
+}
+
+
+void  vec_clear(std::vector<std::vector<std::string>>& vec) {
+	for (auto i = 1; i < S3.size() + 2; ++i) {
+
+		if (!vec[i].empty())
+		{
+			if (S2.find(vec[i][0]) != S2.end()) {
+				if (vec[i][0] != "") {
+					vec[i][0] = "";
+					for (int j = 0; j < count + 2; ++j) {
+						if (vec[i][j] == "|X|") {
+							vec[0][j] = "";
+
+							for (int l = 1; l < S3.size() + 2; ++l) {
+								if (!vec[l].empty())
+									vec[l][j] = "";
+							}
+						}
+					}
+					//vec[i].clear();
+				}
+			}
+
+		}
+
+	}
+}
+
+void print2(std::vector<std::vector<std::string>>& vec) {
+	bool flag = false;
+	for (int i = 1; i < count + 2; ++i) {
+		if (vec[0][i] != "") {
+			flag = true;
+			break;
+		}
+	}
+	if (!flag) return;
+
+	for (int i = 0; i < S3.size() + 1; ++i) {
+		if (i == 0) {
+			std::cout << "       ";
+		}
+
+		if (!vec[i].empty()) {
+			for (int j = 0; j < count + 2; ++j) {
+				if (i == 0) {
+					if (vec[i][j] != "")
+						std::cout << vec[i][j] << "     ";
+					continue;
+				}
+				else if (j == 0) {
+
+					if (vec[i][j] != "")
+						std::cout << vec[i][j] << "   ";
+					else break;
+
+				}
+
+				if (vec[0][j] == "") continue;
+				else {
+					if (vec[i][j] == "") {
+						std::cout << "|0|" << "        ";
+					}
+					else {
+						std::cout << vec[i][j] << "        ";
+					}
+				}
+
+			}
+			std::cout << std::endl << std::endl;
+		}
+	}
+}
+
+
+std::vector<std::vector<std::tuple<std::string, std::string, int, int>>> inizi_s(int size_str, int size_vec) {
+	std::vector<std::vector<std::tuple<std::string, std::string, int, int>>> start;
+	start.resize(size_str);
+	for (int i = 0; i < start.size(); ++i) {
+		start[i].resize(size_vec);
+
+	}
+	return start;
+}
+
+
+bool next_set(std::vector<std::vector<std::tuple<std::string, std::string, int, int>>>& vec, int n, int str, int k) {
+
+
+
+	for (int i = k - 1; i >= 0; --i)
+	{
+		if (std::get<2>(vec[str][i]) < n - k + i + 1)
+		{
+			std::get<2>(vec[str][i]) += 1;
+
+			for (int j = i + 1; j < k; ++j) {
+				std::get<2>(vec[str][j]) = std::get<2>(vec[str][j - 1]) + 1;
+
+			}
+			return true;
+		}
+
+	}
+
+	return false;
+
+
+}
+
+
+std::pair<std::string, int> pash(std::vector<std::vector<std::tuple<std::string, std::string, int, int>>>& start_func, int k, int i) {
+	std::vector< std::tuple<std::string, std::string, int, int>> vec;
+	bool flag = true;
+	int stepen = k;
+	for (int j = 0; j < k; j++) {
+
+		if (flag) {
+			vec.push_back({ '|' + std::get<0>(start_func[i][std::get<2>(start_func[i][j]) - 1]) + '|', "" , 0,k });
+			flag = false;
+		}
+		else std::get<0>(vec[0]) += '|' + std::get<0>(start_func[i][std::get<2>(start_func[i][j]) - 1]) + '|';
+	}
+
+
+	return { std::get<0>(vec[0]), k };
+
+}
+
+std::vector<std::pair<std::string, int>> create_komb(std::vector<std::vector<std::tuple<std::string, std::string, int, int>>> vec, int k, int n, int stroka) {
+	std::vector<std::pair<std::string, int>> help;
+	std::string str;
+	help.push_back(pash(vec, k, stroka));
+	
+	while (next_set(vec, n, stroka, k)) {
+		help.push_back(pash(vec, k, stroka));
+		
+
+	}
+
+	return help;
+}
+
+int check_pork(std::vector<std::vector<std::string>> vec,std::vector<int> a, std::vector<std::pair<std::string, int>> vec2,int l) {
+	int k = 0;
+	for (int i = 0; i < a.size(); ++i) {
+		for (int j = 1; j < vec[vec2[a[i] - 1].second].size(); ++j) {
+			if (vec[0][j] != "") {
+				if (vec[vec2[a[i] - 1].second][j] == "|X|") {
+					++k;
+					vec[0][j] = "";
+				}
+			}
+		}
+	}
+	return k;
+}
+
+bool pokr_2(std::vector<std::vector<std::string>> vec, std::vector<std::pair<std::string, int>> vec2, std::vector<std::vector<int>> a, int l) {
+	int k = 0;
+	for (int i = 0; i < a.size(); ++i) {
+		k = 0;
+		k = check_pork(vec, a[i],vec2, l);
+
+		if (k == l) {
+			for (auto& x : a[i]) {
+				S2.insert(vec2[x - 1].first);
+			}
+			return true;
+		
+		}
+	}
+	return false;
+}
+
+bool pokr(std::vector<std::vector<std::string>>& vec, std::vector<std::pair<std::string, int>> vec2, std::vector<std::pair<std::string, int>> help) {
+	int l = 0;
+	std::vector<std::vector<int>> a;
+	std::string str;
+	for (int i = 0; i < vec[0].size(); ++i) {
+		if (vec[0][i] != "") ++l;
+	}
+	std::cout << l;
+	a.resize(help.size());
+	for (int i = 0; i < help.size(); ++i) {
+		for (int j = 0; j < help[i].first.size(); ++j) {
+			if (std::isdigit(help[i].first[j])) {
+				str += help[i].first[j];
+			}
+			else {
+				if(str != "")
+				a[i].push_back(std::atoi(str.c_str()));
+				str = "";
+			}
+		}
+	}
+	int k = 0;
+	return pokr_2(vec, vec2, a, l);
+	
+	
+}
+void check_yadra(std::vector<std::vector<std::string>>& vec) {
+	S2.clear();
+	std::vector<std::pair<std::string, int>> vec1;
+	int k = 0;
+	int l = 0;
+	std::string str;
+	int index = 0;
+	/*for (int i = 1; i < vec.size(); ++i) {
+		k = 0;
+		if (vec[0][i] != "") {
+			for (int j = 1; j < S3.size() + 2; ++j) {
+				if (vec[j][i] == "|X|") {
+					if (k == 0) index = j;
+					++k;
+				}
+
+			}
+			if (k == 1) {
+				S2.insert(vec[index][0]);
+				k = 0;
+			}
+		}
+	}*/
+	std::cout << std::endl;
+	
+	std::cout << std::endl;
+	//vec_clear(vec);
+
+	for (auto& x : S2) {
+		if (k == 0) {
+			std::cout << x;
+			++k;
+		}
+		else std::cout << " v " << x;
+	}
+	std::cout << std::endl;
+
+	for (int i = 1; i < vec.size(); ++i) {
+		vec1.push_back({ vec[i][0], i });
+	}
+	starts.resize(1);
+	k = 0;
+	for (int i = 0; i < vec1.size(); ++i) {
+		if (vec1[i].first != "") {
+			starts[0].push_back({ std::to_string(vec1[i].second),"",k + 1,i + 1 });
+			++k;
+		}
+	}
+	
+	bool flag = false;
+	print2(vec);
+	for (int k = 2; k < starts[0].size() + 1; ++k) {
+		if (flag) break;
+		std::vector<std::pair<std::string, int>> help;
+		help = create_komb(starts, k, starts[0].size(), 0);
+		//flag = pokr(vec, vec1, help);
+	}
+
+	std::cout << std::endl;
+	k = 0;
+	for (auto& x : S2) {
+		if (k == 0) {
+			std::cout << x;
+			++k;
+		}
+		else std::cout << " v " << x;
+	}
+	std::cout << std::endl;
+	
+
+
+	
+
+}
+
+
+
+void check_index(std::vector<std::vector<std::pair<std::string, std::string>>>& start, int num) {
+
+	std::vector<std::vector<std::string>> vec, vec1;
+	std::string str;
+	int k = 1;
+
+	vec.resize(S3.size() + 2);
+	for (int i = 0; i < S3.size() + 2; ++i) {
+		vec[i].resize(count + 2);
+	}
+	int i = 1;
+	for (auto& x : S3) {
+		vec[i][0] = x;
+		++i;
+	}
+
+
+	for (int i = 0; i < start.size(); ++i) {
+		if (!start[i].empty()) {
+			for (int j = 0; j < start[i].size(); ++j) {
+				if (func[i] != 0) {
+					str += start[i][j].second;
+				}
+			}
+
+
+		}
+		if (str != "") {
+			vec[0][k] = str;
+			++k;
+			str = "";
+		}
+	}
+
+	mark_matrix(vec);
+
+	print2(vec);
+	std::cout << std::endl << std::endl;
+
+	check_yadra(vec);
+	std::cout << std::endl << std::endl;
+}
+
+int main() {
+
+	std::vector<int> num = how_much_del(func);
+	size_vecs = num.size();
+	std::vector<std::vector<std::pair<std::string, std::string>>> start;
+	start = iniz(func.size(), num.size());
+	start = start_func(num.size(), func.size(), num, start,true);
+	parse_func(start);
+	parse_func2();
+	check_index(start, size_vecs);
+
+
+}
+
