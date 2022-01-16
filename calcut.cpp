@@ -12,6 +12,7 @@ trees_t * treehead = nullptr;
 struct max_damage{
     double base_damage;
     double base_chance_crit;
+    double sum_middle_damage;
     double agility;
     double range_atk;
     double art_killing;
