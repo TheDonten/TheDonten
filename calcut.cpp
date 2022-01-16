@@ -79,6 +79,13 @@ void create_tree(trees_t * node, double agil, double level, double free_podouble
 
 }*/
 
+std::cout << "Boost damages =" << dam.base_damage << '\n';
+    std::cout << "All damages =" << dam.all_damage << '\n';
+    std::cout << "agility =" << dam.agility << '\n';
+    std::cout << "Range attack =" << dam.range_atk << '\n';
+    std::cout << "art killing =" << dam.art_killing << '\n';
+    std::cout << "level =" << dam.level << '\n';
+
 double main(){
 
     double agil = 1;
