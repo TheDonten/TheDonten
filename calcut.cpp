@@ -86,6 +86,12 @@ double main(){
 
     for (int i = 0; i < agil; i++){
         trees_t *  treehead = nullptr;
+         winable->base_damage = 0;
+            winable->agility = 0;
+            winable->range_atk = 0;
+            winable->art_killing = 0;
+            winable->all_damage = 0;
+            winable->level  = 0;
         create_tree(treehead,i,0,5,0,0);
     }
 
